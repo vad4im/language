@@ -1,0 +1,26 @@
+<h2>My Clauses</h2>
+
+<div>
+  <label>Phrase name:
+    <input #phraseName />
+  </label>
+  <!-- (click) passes input value to add() and then clears the input -->
+  <button (click)="add(phraseName.value); phraseName.value=''">
+    add
+  </button>
+</div>
+
+<ul class="clauses">
+  <li *ngFor="let phrase of clauses">
+    <a routerLink="/detail/{{phrase.id}}">
+      <span class="badge">{{phrase.id}}</span> {{phrase.orig}}
+        </a>
+    <button class="delete" title="delete Phrase"
+      (click)="delete(phrase)">x</button>
+  </li>
+</ul>
+
+<app-phrase-search></app-phrase-search>
+
+
+

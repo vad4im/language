@@ -1,0 +1,26 @@
+
+<!--<h2>Clauses kit list</h2>-->
+
+
+<!--<ul class="kitlist">-->
+  <!--<li *ngFor="let kit of clausesKit"  (click)="onSelect( kit)"  >-->
+    <!--&lt;!&ndash;<a routerLink="/detail/{{phrase.id}}">&ndash;&gt;-->
+    <!--<span class="badge">{{kit.id}}</span> {{kit.clausesName}}-->
+    <!--&lt;!&ndash;</a>&ndash;&gt;-->
+  <!--</li>-->
+<!--</ul>-->
+
+
+
+<mat-toolbar color="primary">
+  Clauses kit list
+</mat-toolbar>
+<div class="basic-container">
+  <app-simple-table (getSourceDataFlag)="sendDataToChild($event)"
+                     [state]="clausesKit"
+                     [parentSettings]="settingsToChild"
+                     [parentMessage]="parentMessage"
+  ></app-simple-table>
+  <!--<span class="version-info">Current build: {{version.full}}</span>-->
+</div>
+

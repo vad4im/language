@@ -1,0 +1,13 @@
+<div *ngIf="phrase">
+
+  <h2>{{phrase.orig | uppercase}} Details</h2>
+  <div><span>id: </span>{{phrase.id}}</div>
+  <div>
+    <label>orig:
+      <input [(ngModel)]="phrase.orig" placeholder="orig"/>
+    </label>
+  </div>
+  <button (click)="goBack()">go back</button>
+  <button (click)="save()">save</button>
+</div>
+
