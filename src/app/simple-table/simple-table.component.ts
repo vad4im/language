@@ -2,6 +2,7 @@
 import { Component, OnInit, ChangeDetectionStrategy, Input, ViewChild, AfterViewInit, Output, EventEmitter } from '@angular/core';
 import { MatSort, MatTableDataSource, MatPaginator } from '@angular/material';
 import { SimpleTableService } from '../Simple-Table.Service';
+import {SelectionModel} from '@angular/cdk/collections';
 
 @Component({
   selector: 'app-simple-table',
@@ -10,13 +11,11 @@ import { SimpleTableService } from '../Simple-Table.Service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SimpleTableComponent implements OnInit, AfterViewInit  {
-
-  @Input() state: any[];
-  @Output() getSourceDataFlag = new EventEmitter<number>();
-
   @Input() parentSettings;
-  @Input() parentMessage;
+  selection = new SelectionModel<any>(true, []);
 
+  @Output() getSourceDataFlag = new EventEmitter<number>();
+  @Input() parentMessage;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
@@ -24,10 +23,24 @@ export class SimpleTableComponent implements OnInit, AfterViewInit  {
 
   constructor(private simpleTableService: SimpleTableService) {}
 
+
+  /** Whether the number of selected elements matches the total number of rows. */
+  isAllSelected() {
+    const numSelected = this.selection.selected.length;
+    const numRows = this.dataSource.data.length;
+    return numSelected === numRows;
+  }
+
+  /** Selects all rows if they are not all selected; otherwise clear selection. */
+  masterToggle() {
+    this.isAllSelected() ?
+      this.selection.clear() :
+      this.dataSource.data.forEach(row => this.selection.select(row));
+  }
+
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
   }
-
   ngOnInit() {
     console.log (this.getSourceDataFlag.emit(6));
     this.parentMessage()();
@@ -35,15 +48,10 @@ export class SimpleTableComponent implements OnInit, AfterViewInit  {
     // this.dataSource.data = this.state;
     this.dataSource.sort = this.sort;
   }
-  // Правило вызова функций №2: В функции, вызванной с использованием синтаксиса вызова метода,
-  // например, obj.myFunction() или obj['myFunction'](), this будет иметь значение obj.
-
   getSourceData() {
     this.simpleTableService.getClausesKitData ( this.parentSettings.myService, this.parentSettings.myMethod.get )
       .subscribe(data => this.dataSource.data = data);
   }
 
-  // public getSourceData(index: number) {
-  //   this.getSourceDataFlag.emit(index);
-  // }
+
 }

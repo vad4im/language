@@ -17,7 +17,6 @@
 </mat-toolbar>
 <div class="basic-container">
   <app-simple-table (getSourceDataFlag)="sendDataToChild($event)"
-                     [state]="clausesKit"
                      [parentSettings]="settingsToChild"
                      [parentMessage]="parentMessage"
   ></app-simple-table>

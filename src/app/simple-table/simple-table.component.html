@@ -1,14 +1,37 @@
 <mat-table [dataSource]="dataSource" matSort
                                      [matSortActive]=parentSettings.sort.active
                                      [matSortDirection]=parentSettings.sort.direction>
+
+  <!-- Checkbox Column -->
+  <ng-container matColumnDef="select">
+    <th mat-header-cell *matHeaderCellDef>
+      <mat-checkbox (change)="$event ? masterToggle() : null"
+                    [checked]="selection.hasValue() && isAllSelected()"
+                    [indeterminate]="selection.hasValue() && !isAllSelected()">
+      </mat-checkbox>
+    </th>
+    <td mat-cell *matCellDef="let row">
+      <mat-checkbox (click)="$event.stopPropagation()"
+                    (change)="$event ? selection.toggle(row) : null"
+                    [checked]="selection.isSelected(row)">
+      </mat-checkbox>
+    </td>
+  </ng-container>
+
+  <!--<ng-container matColumnDef="id">-->
+    <!--<th mat-header-cell *matHeaderCellDef> No. </th>-->
+    <!--<td mat-cell *matCellDef="let element"> {{element.id}} </td>-->
+  <!--</ng-container>-->
+
+
   <ng-container *ngFor="let col of parentSettings.cell"  [matColumnDef]="col.name">
     <mat-header-cell *matHeaderCellDef> {{col.def}} </mat-header-cell>
     <mat-cell *matCellDef="let row"> {{row[col.name]}} </mat-cell>
   </ng-container>
 
   <mat-header-row *matHeaderRowDef="parentSettings.row"></mat-header-row>
-
-  <mat-row *matRowDef="let row; columns: parentSettings.row;"></mat-row>
+  <mat-row *matRowDef="let row; columns: parentSettings.row;"
+           (click)="selection.toggle(row)"></mat-row>
 
 </mat-table>
 <mat-paginator [pageSize]=parentSettings.pageStt.pageSize
@@ -24,7 +47,7 @@
   <!--&lt;!&ndash;- Note that these columns can be defined in any order.-->
         <!--The actual rendered columns are set as a property on the row definition" &ndash;&gt;-->
 
-  <!--&lt;!&ndash; Position Column &ndash;&gt;-->
+  <!-- Position Column -->
   <!--<ng-container matColumnDef="id">-->
     <!--<th mat-header-cell *matHeaderCellDef> No. </th>-->
     <!--<td mat-cell *matCellDef="let element"> {{element.id}} </td>-->

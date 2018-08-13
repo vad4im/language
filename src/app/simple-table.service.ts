@@ -10,7 +10,7 @@ export class SimpleTableService {
 
   getClausesKitData(service: string, method: string) {
     // console.log('simpleTableService service: ' + service + ' method: ' + method);
-    return  this[service][method]();
+         return this[service][method]();
 
   }
 
