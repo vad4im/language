@@ -12,15 +12,21 @@ export class ClausesKitListComponent implements OnInit {
   selectedClausesKit: ClausesKit;
   clausesKit: ClausesKit[];
 
-  settingsToChild = { pageStt: {pageSizeOptions: [1, 3, 9], showFirstLastButtons: true, pageSize: 3 },
+  settingsToChild = {
+                       pageStt: {pageSizeOptions: [1, 3, 9]
+                     , showFirstLastButtons: true
+                     , pageSize: 3
+                     },
     sort: {active: 'id', direction: 'desc' },
     cell: [ {name: 'id', def: 'ID'},
             {name: 'clausesName', def: 'Name'},
             {name: 'origLang', def: 'sLang'},
             {name: 'translLang', def: 'dLang'},
-            {name: 'sourceUrl', def: 'URL'}
+            {name: 'sourceUrl', def: 'URL'},
       ],
-    row:  ['id', 'clausesName', 'origLang', 'translLang', 'sourceUrl' ]
+    row:  ['id', 'clausesName', 'origLang', 'translLang', 'sourceUrl' ],
+    myService: 'clausesKitService',
+    myMethod: {get: 'getClausesKit'}
   };
 
   constructor(private clausesKitService: ClausesKitService,

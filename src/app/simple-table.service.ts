@@ -8,9 +8,9 @@ export class SimpleTableService {
 
   constructor(private clausesKitService: ClausesKitService) {}
 
-  getClausesKitData() {
-    // return  this.clausesKitService.getClausesKit();
-    return  this.clausesKitService['getClausesKit']();
+  getClausesKitData(service: string, method: string) {
+    // console.log('simpleTableService service: ' + service + ' method: ' + method);
+    return  this[service][method]();
 
   }
 

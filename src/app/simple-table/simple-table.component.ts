@@ -39,7 +39,7 @@ export class SimpleTableComponent implements OnInit, AfterViewInit  {
   // например, obj.myFunction() или obj['myFunction'](), this будет иметь значение obj.
 
   getSourceData() {
-    this.simpleTableService.getClausesKitData()
+    this.simpleTableService.getClausesKitData ( this.parentSettings.myService, this.parentSettings.myMethod.get )
       .subscribe(data => this.dataSource.data = data);
   }
 
