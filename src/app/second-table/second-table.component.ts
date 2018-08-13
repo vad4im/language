@@ -1,61 +1,51 @@
-// https://stackblitz.com/edit/angular-material2-issue-gqmbva?file=app%2Fapp.component.ts
-import {Component, OnInit} from '@angular/core';
-import {VERSION} from '@angular/material';
+import {SelectionModel} from '@angular/cdk/collections';
+import {Component} from '@angular/core';
+import {MatTableDataSource} from '@angular/material';
 
+export interface PeriodicElement {
+  name: string;
+  position: number;
+  weight: number;
+  symbol: string;
+}
+
+const ELEMENT_DATA: PeriodicElement[] = [
+  {position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H'},
+  {position: 2, name: 'Helium', weight: 4.0026, symbol: 'He'},
+  {position: 3, name: 'Lithium', weight: 6.941, symbol: 'Li'},
+  {position: 4, name: 'Beryllium', weight: 9.0122, symbol: 'Be'},
+  {position: 5, name: 'Boron', weight: 10.811, symbol: 'B'},
+  {position: 6, name: 'Carbon', weight: 12.0107, symbol: 'C'},
+  {position: 7, name: 'Nitrogen', weight: 14.0067, symbol: 'N'},
+  {position: 8, name: 'Oxygen', weight: 15.9994, symbol: 'O'},
+  {position: 9, name: 'Fluorine', weight: 18.9984, symbol: 'F'},
+  {position: 10, name: 'Neon', weight: 20.1797, symbol: 'Ne'},
+];
+
+/**
+ * @title Table with selection
+ */
 @Component({
   selector: 'app-second-table',
-  templateUrl: './second-table.component.html',
-  styleUrls: ['./second-table.component.css']
+  styleUrls: ['second-table.component.css'],
+  templateUrl: 'second-table.component.html',
 })
-export class SecondTableComponent  implements OnInit {
+export class SecondTableComponent {
+  displayedColumns: string[] = ['select', 'position', 'name', 'weight', 'symbol'];
+  dataSource = new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
+  selection = new SelectionModel<PeriodicElement>(true, []);
 
-  version = VERSION + 'ST';
-  settingsToChild = { pageStt: {pageSizeOptions: [1, 3, 9], showFirstLastButtons: true, pageSize: 3 },
-                      sort: {active: 'id', direction: 'desc' },
-                      cell: [ {name: 'id', def: 'ID'},
-                              {name: 'designation', def: 'че-то'}],
-                      row:  [ 'designation', 'id']
-  };
-
-
-  public state = [
-    {id: '2', designation: 'c'},
-    {id: '0', designation: 'a'},
-    {id: '1', designation: 'w'},
-    {id: '3', designation: 'e'},
-    {id: '4', designation: 'r'},
-    {id: '5', designation: 't'},
-    {id: '6', designation: 'y'},
-    {id: '7', designation: 'u'},
-    {id: '8', designation: 'i'}
-  ];
-  ngOnInit() {
-    console.log('second table component parent onInit');
-    this.state = [
-      {id: '32', designation: 'cer'},
-      {id: '30', designation: 'areter'},
-      {id: '31', designation: 'werger'},
-      {id: '33', designation: 'areter'},
-      {id: '34', designation: 'werger'}
-    ];
-  }
-  public sendDataToChild(index: number): number {
-    console.log('SecondTable parent sendDataToChild called');
-    return 77;
-}
-
-  parentMessage() {
-    const ww = this.version;
-     return function(){
-      console.log('SecondTable MESSAGE WORK  !!!!!!!!!!!!' + ww);
-      // return ('SecondTable MESSAGE WORK  !!!!!!!!!!!!');
-     }
+  /** Whether the number of selected elements matches the total number of rows. */
+  isAllSelected() {
+    const numSelected = this.selection.selected.length;
+    const numRows = this.dataSource.data.length;
+    return numSelected === numRows;
   }
 
-
+  /** Selects all rows if they are not all selected; otherwise clear selection. */
+  masterToggle() {
+    this.isAllSelected() ?
+      this.selection.clear() :
+      this.dataSource.data.forEach(row => this.selection.select(row));
+  }
 }
-
- // Copyright Google LLC All Rights Reserved.
- //
- // Use of this source code is governed by an MIT-style license that can be
- // found in the LICENSE file at https://angular.io/license

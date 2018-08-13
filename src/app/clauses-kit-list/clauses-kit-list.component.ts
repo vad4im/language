@@ -24,7 +24,9 @@ export class ClausesKitListComponent implements OnInit {
             {name: 'translLang', def: 'dLang'},
             {name: 'sourceUrl', def: 'URL'},
       ],
-    row:  ['id', 'clausesName', 'origLang', 'translLang', 'sourceUrl' ],
+    row:  [
+             'select', // Checkbox Column
+             'id', 'clausesName', 'origLang', 'translLang', 'sourceUrl' ],
     myService: 'clausesKitService',
     myMethod: {get: 'getClausesKit'}
   };
