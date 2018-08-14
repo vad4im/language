@@ -36,7 +36,7 @@ export class SimpleTableComponent implements OnInit, AfterViewInit  {
     this.isAllSelected() ?
       this.selection.clear() :
       this.dataSource.data.forEach(row => this.selection.select(row));
-    console.log('Simple-Table_component header Selected count: ' + this.selection.selected.length );
+    console.log('Simple-Table_component header Selected coun: ' + this.selection.selected.length );
   }
 
   ngAfterViewInit() {

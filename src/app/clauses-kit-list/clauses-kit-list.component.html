@@ -15,10 +15,14 @@
 <mat-toolbar color="primary">
   Clauses kit list
 </mat-toolbar>
+<!--<div class="button-row">-->
+  <!--<button mat-raised-button (click)="setCurrent()" color="primary">set Current</button>-->
+<!--</div>-->
 <div class="basic-container">
   <app-simple-table (getSourceDataFlag)="sendDataToChild($event)"
                      [parentSettings]="settingsToChild"
                      [parentMessage]="parentMessage"
+
   ></app-simple-table>
   <!--<span class="version-info">Current build: {{version.full}}</span>-->
 </div>
