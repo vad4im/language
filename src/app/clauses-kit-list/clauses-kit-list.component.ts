@@ -1,7 +1,8 @@
 import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import {ClausesKit} from '../clauseskit';
 import { ClausesKitService } from '../clauses-kit.service';
-import {MatSort, VERSION, MatPaginator} from '@angular/material';
+
+import { Observable, of, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-clauses-kit-list',
@@ -10,7 +11,7 @@ import {MatSort, VERSION, MatPaginator} from '@angular/material';
 })
 export class ClausesKitListComponent implements OnInit {
   selectedClausesKit: ClausesKit;
-  clausesKit: ClausesKit[];
+  clausesKit: Observable<{}>;
 
   settingsToChild = {
                        pageStt: {pageSizeOptions: [1, 3, 9]
@@ -31,26 +32,21 @@ export class ClausesKitListComponent implements OnInit {
     myMethod: {get: 'getClausesKit'}
   };
 
+
   constructor(private clausesKitService: ClausesKitService,
-              private share: ClausesKitService) {}
+              private share: ClausesKitService) {
+  }
 
   ngOnInit() {
     this.getClausesKit();
   }
+  setCurrent (){}
 
-  parentMessage() {
-    return function(){
-      const ww = this;
-      console.log('ClausesKitList MESSAGE WORK  !!!!!!!!!!!!');
-    }
+  getClausesKit() {
+    this.clausesKit =  this.clausesKitService.getClausesKit();
   }
 
-  sendDataToChild(event: any): number {
-    console.log('ClausesKitList parent sendDataToChild called');
-    return 1;
-  }
-
-  getSelectedClausesKit(): ClausesKit{
+  getSelectedClausesKit(): ClausesKit {
     console.log('clauses_kit_list.get_selectedClause._id: ' + this.selectedClausesKit._id);
     return this.selectedClausesKit;
   }
@@ -59,11 +55,6 @@ export class ClausesKitListComponent implements OnInit {
     this.selectedClausesKit = clausesKit;
     console.log('clauses-kit-list.onSelect: ' + this.selectedClausesKit.clausesName + ' _id ' + this.selectedClausesKit._id);
     this.share.setCurrentKitName(this.selectedClausesKit);
-  }
-
-  getClausesKit(): void {
-    this.clausesKitService.getClausesKit()
-      .subscribe(clausesKit => this.clausesKit = clausesKit);
   }
 
 }

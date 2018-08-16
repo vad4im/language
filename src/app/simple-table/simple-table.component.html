@@ -18,7 +18,6 @@
     </td>
   </ng-container>
 
-
   <ng-container *ngFor="let col of parentSettings.cell"  [matColumnDef]="col.name">
     <mat-header-cell *matHeaderCellDef> {{col.def}} </mat-header-cell>
     <mat-cell *matCellDef="let row"> {{row[col.name]}} </mat-cell>
@@ -34,33 +33,3 @@
                [showFirstLastButtons]=parentSettings.pageStt.showFirstLastButtons
              >
 </mat-paginator>
-
-
-
-<!--<table mat-table [dataSource]="dataSource" class="mat-elevation-z8">-->
-
-  <!--&lt;!&ndash;- Note that these columns can be defined in any order.-->
-        <!--The actual rendered columns are set as a property on the row definition" &ndash;&gt;-->
-
-  <!-- Position Column -->
-  <!--<ng-container matColumnDef="id">-->
-    <!--<th mat-header-cell *matHeaderCellDef> No. </th>-->
-    <!--<td mat-cell *matCellDef="let element"> {{element.id}} </td>-->
-  <!--</ng-container>-->
-
-  <!--&lt;!&ndash; Name Column &ndash;&gt;-->
-  <!--<ng-container matColumnDef="designation">-->
-    <!--<th mat-header-cell *matHeaderCellDef> Name </th>-->
-    <!--<td mat-cell *matCellDef="let element"> {{element.designation}} </td>-->
-  <!--</ng-container>-->
-
-  <!--<tr mat-header-row *matHeaderRowDef="parentSettings.colShow"></tr>-->
-  <!--<tr mat-row *matRowDef="let row; columns: parentSettings.colShow;"></tr>-->
-<!--</table>-->
-
-
-
-
-
-
-

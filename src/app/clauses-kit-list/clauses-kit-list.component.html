@@ -1,29 +1,13 @@
-
-<!--<h2>Clauses kit list</h2>-->
-
-
-<!--<ul class="kitlist">-->
-  <!--<li *ngFor="let kit of clausesKit"  (click)="onSelect( kit)"  >-->
-    <!--&lt;!&ndash;<a routerLink="/detail/{{phrase.id}}">&ndash;&gt;-->
-    <!--<span class="badge">{{kit.id}}</span> {{kit.clausesName}}-->
-    <!--&lt;!&ndash;</a>&ndash;&gt;-->
-  <!--</li>-->
-<!--</ul>-->
-
-
-
 <mat-toolbar color="primary">
   Clauses kit list
 </mat-toolbar>
-<!--<div class="button-row">-->
-  <!--<button mat-raised-button (click)="setCurrent()" color="primary">set Current</button>-->
-<!--</div>-->
-<div class="basic-container">
-  <app-simple-table (getSourceDataFlag)="sendDataToChild($event)"
-                     [parentSettings]="settingsToChild"
-                     [parentMessage]="parentMessage"
+<div class="button-row">
+  <button mat-raised-button (click)="setCurrent()" color="primary">set Current</button>
+</div>
+<div class="basic-container" *ngIf="clausesKit | async; let clausesKit; else loading;">
 
-  ></app-simple-table>
-  <!--<span class="version-info">Current build: {{version.full}}</span>-->
+<app-simple-table  [parentSettings]="settingsToChild"
+                   [state] = "clausesKit"></app-simple-table>
+
 </div>
 
