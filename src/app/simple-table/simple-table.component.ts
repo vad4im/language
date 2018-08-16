@@ -23,6 +23,10 @@ export class SimpleTableComponent implements OnInit, AfterViewInit  {
     const numRows = this.dataSource.data.length;
     return numSelected === numRows;
   }
+  selectionToggle(row){
+    console.log('Simple-Table_component row Selected id: ' + row._id /*+ ' selected ' + row.isSelected() + 'multiSelection ' + row.isMultipleSelection*/);
+    this.selection.toggle(row);
+  }
   /** Selects all rows if they are not all selected; otherwise clear selection. */
   masterToggle() {
     this.isAllSelected() ?
