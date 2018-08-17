@@ -2,14 +2,21 @@
                                      [matSortActive]=parentSettings.sort.active
                                      [matSortDirection]=parentSettings.sort.direction>
 
+
   <!-- Checkbox Column -->
-  <ng-container matColumnDef="select">
-    <th mat-header-cell *matHeaderCellDef>
-      <mat-checkbox (change)="$event ? masterToggle() : null"
-                    [checked]="selection.hasValue() && isAllSelected()"
-                    [indeterminate]="selection.hasValue() && !isAllSelected()">
-      </mat-checkbox>
-    </th>
+  <ng-container matColumnDef={{parentSettings.checkColumn.name}}>
+        <th mat-header-cell *matHeaderCellDef >
+          <div *ngIf="parentSettings.checkColumn.multiselect; then thenBlock else elseBlock"></div>
+          <ng-template #thenBlock>
+            <mat-checkbox (change)="$event ? masterToggle() : null"
+                        [checked]="selection.hasValue() && isAllSelected()"
+                        [indeterminate]="selection.hasValue() && !isAllSelected()">
+            </mat-checkbox>
+          </ng-template>
+          <ng-template #elseBlock>
+            {{parentSettings.checkColumn.name}}
+          </ng-template>
+        </th>
     <td mat-cell *matCellDef="let row">
       <mat-checkbox (click)="$event.stopPropagation()"
                     (change)="$event ? selectionToggle(row) : null"
@@ -23,8 +30,8 @@
     <mat-cell *matCellDef="let row"> {{row[col.name]}} </mat-cell>
   </ng-container>
 
-  <mat-header-row *matHeaderRowDef="parentSettings.row"></mat-header-row>
-  <mat-row *matRowDef="let row; columns: parentSettings.row;"
+  <mat-header-row *matHeaderRowDef="parentSettings.sellVisible"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: parentSettings.sellVisible;"
            (click)="selection.toggle(row)"></mat-row>
 
 </mat-table>

@@ -15,7 +15,10 @@ export class SimpleTableComponent implements OnInit, AfterViewInit  {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
   dataSource = new MatTableDataSource<any>();
+
   selection = new SelectionModel<any>(true, []);
+
+  @Output()choiseRequest = new EventEmitter<any>();
 
   /** Whether the number of selected elements matches the total number of rows. */
   isAllSelected() {
@@ -23,16 +26,28 @@ export class SimpleTableComponent implements OnInit, AfterViewInit  {
     const numRows = this.dataSource.data.length;
     return numSelected === numRows;
   }
-  selectionToggle(row){
-    console.log('Simple-Table_component row Selected id: ' + row._id /*+ ' selected ' + row.isSelected() + 'multiSelection ' + row.isMultipleSelection*/);
+
+  selectionToggle(row) {
+    console.log('Simple-Table_component row 1 Selected id: ' + row._id + ' selected ' + this.selection.isSelected(row) + ' multiSelection count ' + this.selection.selected.length );
+    if (!this.parentSettings.checkColumn.multiselect) {
+      this.selection.clear();
+    }
     this.selection.toggle(row);
+    this.choiseRequest.emit(
+      {isSel: this.selection.isSelected(row),
+             cnt: this.selection.selected.length,
+             ow: row}
+       );
+    console.log('Simple-Table_component row 1 Selected id: ' + row._id + ' selected ' + this.selection.isSelected(row) + ' multiSelection count ' + this.selection.selected.length );
+    console.log(' Child !!choise event!! isSelect - ' + this.selection.isSelected(row));
   }
+
   /** Selects all rows if they are not all selected; otherwise clear selection. */
   masterToggle() {
     this.isAllSelected() ?
       this.selection.clear() :
       this.dataSource.data.forEach(row => this.selection.select(row));
-    console.log('Simple-Table_component header Selected coun: ' + this.selection.selected.length );
+    console.log('Simple-Table_component header Selected count: ' + this.selection.selected.length );
   }
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;

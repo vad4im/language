@@ -2,10 +2,14 @@
   Clauses kit list
 </mat-toolbar>
 <div class="button-row">
-  <button mat-raised-button (click)="setCurrent()" color="primary">set Current</button>
+  <button mat-raised-button
+          [disabled]="!buttonSetCurrent.enable"
+          (click)="setCurrent()" color="primary">set Current</button>
 </div>
 <div class="basic-container" *ngIf="clausesKit | async; let clausesKit; else loading;">
 
-<app-simple-table  [parentSettings]="settingsToChild"
-                   [state] = "clausesKit"></app-simple-table>
+<app-simple-table  (choiseRequest)="choiseEvent($event)" [parentSettings]="settingsToChild"
+                   [state] = "clausesKit"
+                   ></app-simple-table>
 </div>
+<ng-template #loading>Loading User Data...</ng-template>

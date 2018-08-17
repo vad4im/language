@@ -13,33 +13,37 @@ export class ClausesKitListComponent implements OnInit {
   selectedClausesKit: ClausesKit;
   clausesKit: Observable<{}>;
 
-  settingsToChild = {
-                       pageStt: {pageSizeOptions: [1, 3, 9]
+  settingsToChild = {  pageStt: {pageSizeOptions: [1, 3, 9]
                      , showFirstLastButtons: true
                      , pageSize: 3
                      },
+    checkColumn: { name: 'check',
+                   multiselect: false
+                  },
     sort: {active: 'id', direction: 'desc' },
     cell: [ {name: 'id', def: 'ID'},
             {name: 'clausesName', def: 'Name'},
             {name: 'origLang', def: 'sLang'},
             {name: 'translLang', def: 'dLang'},
             {name: 'sourceUrl', def: 'URL'},
-      ],
-    row:  [
-             'select', // Checkbox Column
-             'id', 'clausesName', 'origLang', 'translLang', 'sourceUrl' ],
-    myService: 'clausesKitService',
-    myMethod: {get: 'getClausesKit'}
+           ],
+    sellVisible:  ['id', 'clausesName', 'origLang', 'translLang', 'sourceUrl' ]
   };
-
-
+  buttonSetCurrent = { enable: false};
   constructor(private clausesKitService: ClausesKitService,
               private share: ClausesKitService) {
   }
 
   ngOnInit() {
+    this.settingsToChild.sellVisible.unshift(this.settingsToChild.checkColumn.name);
     this.getClausesKit();
   }
+
+  choiseEvent(data){
+    this.buttonSetCurrent.enable = data.isSel;
+    console.log(' Parent !!choise event!! enable is ' + this.buttonSetCurrent.enable);
+  }
+
   setCurrent (){}
 
   getClausesKit() {
