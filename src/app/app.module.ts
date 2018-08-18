@@ -21,6 +21,8 @@ import { StatusBarComponent } from './status-bar/status-bar.component';
 import { ClausesKitService } from './clauses-kit.service';
 import { SimpleTableComponent } from './simple-table/simple-table.component';
 import { SecondTableComponent } from './second-table/second-table.component';
+import { ClausesKitComponent } from './clauses-kit/clauses-kit.component';
+import { ClausesKitDetailComponent } from './clauses-kit-detail/clauses-kit-detail.component';
 
 @NgModule({
   imports: [
@@ -50,7 +52,11 @@ import { SecondTableComponent } from './second-table/second-table.component';
 
     SimpleTableComponent,
     SecondTableComponent,
-    StatusBarComponent
+    StatusBarComponent,
+    ClausesKitComponent,
+    ClausesKitDetailComponent
+  ],
+  entryComponents: [ClausesKitDetailComponent
   ],
   providers:    [ ClausesKitService
   ],

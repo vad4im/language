@@ -1,7 +1,6 @@
 import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import {ClausesKit} from '../clauseskit';
 import { ClausesKitService } from '../clauses-kit.service';
-
 import { Observable, of, Subscription } from 'rxjs';
 
 @Component({
@@ -21,7 +20,9 @@ export class ClausesKitListComponent implements OnInit {
                    multiselect: false
                   },
     sort: {active: 'id', direction: 'desc' },
-    cell: [ {name: 'id', def: 'ID'},
+    cell:
+      [ {name: '_id', def: '_ID'},
+            {name: 'id', def: 'ID'},
             {name: 'clausesName', def: 'Name'},
             {name: 'origLang', def: 'sLang'},
             {name: 'translLang', def: 'dLang'},
@@ -29,9 +30,8 @@ export class ClausesKitListComponent implements OnInit {
            ],
     sellVisible:  ['id', 'clausesName', 'origLang', 'translLang', 'sourceUrl' ]
   };
-  buttonSetCurrent = { enable: false};
   constructor(private clausesKitService: ClausesKitService,
-              private share: ClausesKitService) {
+              private share: ClausesKitService){
   }
 
   ngOnInit() {
@@ -40,24 +40,21 @@ export class ClausesKitListComponent implements OnInit {
   }
 
   choiseEvent(data){
-    this.buttonSetCurrent.enable = data.isSel;
-    console.log(' Parent !!choise event!! enable is ' + this.buttonSetCurrent.enable);
+    this.selectedClausesKit = data.row;
+    // console.log(' Parent !!choise event!! enable is ' + this.buttonSetCurrent.enable);
   }
-
-  setCurrent (){}
-
   getClausesKit() {
     this.clausesKit =  this.clausesKitService.getClausesKit();
   }
 
-  getSelectedClausesKit(): ClausesKit {
-    console.log('clauses_kit_list.get_selectedClause._id: ' + this.selectedClausesKit._id);
-    return this.selectedClausesKit;
-  }
+  // getSelectedClausesKit(): ClausesKit {
+  //   console.log('clauses_kit_list.get_selectedClause._id: ' + this.selectedClausesKit._id);
+  //   return this.selectedClausesKit;
+  // }
+  addKit(){
 
-  onSelect(clausesKit: ClausesKit): void {
-    this.selectedClausesKit = clausesKit;
-    console.log('clauses-kit-list.onSelect: ' + this.selectedClausesKit.clausesName + ' _id ' + this.selectedClausesKit._id);
+  }
+  setKitCurrent(data): void {
     this.share.setCurrentKitName(this.selectedClausesKit);
   }
 

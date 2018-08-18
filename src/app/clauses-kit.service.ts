@@ -20,13 +20,8 @@ export class ClausesKitService {
 
   public setCurrentKitName(clausesKit: ClausesKit) {
     this.onClausesKitSetCurrent.emit(clausesKit);
-    console.log('clauses-kit.service.setCurrentKitName: ' + clausesKit.clausesName);
+    this.log('Current Kit Name selected value is: ' + clausesKit.clausesName);
   }
-
-  // getClausesKit(): Observable<ClausesKit[]> {
-  //   this.messageService.add ('PhraseService: fetched clausesKit');
-  //   return of(CLAUSES_KIT_LIST);
-  // }
 
   getClausesKit(): Observable<ClausesKit[]> {
     return this.http.get<ClausesKit[]>(this.resourceUrl)

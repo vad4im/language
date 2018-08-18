@@ -3,13 +3,14 @@
 </mat-toolbar>
 <div class="button-row">
   <button mat-raised-button
-          [disabled]="!buttonSetCurrent.enable"
-          (click)="setCurrent()" color="primary">set Current</button>
+          [disabled]="!selectedClausesKit"
+          (click)="setKitCurrent()" color="primary">Select</button>
+  <app-clauses-kit></app-clauses-kit>
 </div>
 <div class="basic-container" *ngIf="clausesKit | async; let clausesKit; else loading;">
 
 <app-simple-table  (choiseRequest)="choiseEvent($event)" [parentSettings]="settingsToChild"
                    [state] = "clausesKit"
-                   ></app-simple-table>
+></app-simple-table>
 </div>
 <ng-template #loading>Loading User Data...</ng-template>
