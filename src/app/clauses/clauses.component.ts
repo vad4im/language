@@ -43,20 +43,28 @@ export class ClausesComponent implements OnInit {
 
     this.share.onClausesKitSetCurrent.subscribe(
        data  =>  this.clausesKit = data
-      // console.log('clauses_component.clausesKit._id' + data._id);
-    );
+       // console.log('clauses_component.clausesKit._id' + data._id);
+   );
+
+   if (this.clausesKit) {
+     console.log('Set Current in clauses id:'+ this.clausesKit._id);
+     this.getClausesOfRef(this.clausesKit._id);
+   };
   }
 
 
   ngOnInit() {
     this.settingsToChild.sellVisible.unshift(this.settingsToChild.checkColumn.name);
-    this.getClauses();
+    // this.getClauses();
   }
 
   getClauses(): void {
     this.clauses =  this.phraseService.getClauses();
     // this.phraseService.getClauses()
     //   .subscribe(clauses => this.clauses = clauses);
+  }
+  getClausesOfRef(id): void {
+    this.clauses =  this.phraseService.getClausesOfRef(id);
   }
 //
 //   add(orig: string): void {
