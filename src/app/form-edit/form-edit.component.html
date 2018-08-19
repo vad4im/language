@@ -3,6 +3,9 @@
   <p>KIT detail : </p>
   <form class="simple-form"  >
     <mat-form-field class="example-full-width">
+      <input matInput placeholder="id" [(ngModel)]="data.id" [ngModelOptions]="{standalone: true}">
+    </mat-form-field>
+    <mat-form-field class="example-full-width">
       <input matInput placeholder="clauses name" [(ngModel)]="data.clausesName" [ngModelOptions]="{standalone: true}">
     </mat-form-field>
     <mat-form-field class="example-full-width">

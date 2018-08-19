@@ -1,7 +1,7 @@
 import { Component, OnInit} from '@angular/core';
 import {MatDialog} from '@angular/material';
-import {ClausesKitDetailComponent} from '../clauses-kit-detail/clauses-kit-detail.component';
-import {ClausesKit} from '../ClausesKit';
+import {FormEditComponent} from '../form-edit/form-edit.component'
+import {ClausesKit} from '../clausesKit';
 
 @Component({
   selector: 'app-clauses-kit',
@@ -15,11 +15,11 @@ export class ClausesKitComponent implements OnInit {
   ngOnInit() {
   }
 
-  openAddDialog(): void {
+  openAddDialog(editData): void {
     console.log('Start dialog opening');
-    const dialogRef = this.dialog.open(ClausesKitDetailComponent, {
+    const dialogRef = this.dialog.open(FormEditComponent, {
       width: '320px',
-      data: this.clausesKit = new ClausesKit
+      data: editData
     });
 
     dialogRef.afterClosed().subscribe(result => {

@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ClausesKitDetailComponent } from './clauses-kit-detail.component';
+import { ClausesKitDetailComponent } from './form-edit.component';
 
 describe('ClausesKitDetailComponent', () => {
   let component: ClausesKitDetailComponent;

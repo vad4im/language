@@ -22,7 +22,7 @@ import { ClausesKitService } from './clauses-kit.service';
 import { SimpleTableComponent } from './simple-table/simple-table.component';
 import { SecondTableComponent } from './second-table/second-table.component';
 import { ClausesKitComponent } from './clauses-kit/clauses-kit.component';
-import { ClausesKitDetailComponent } from './clauses-kit-detail/clauses-kit-detail.component';
+ import { FormEditComponent } from './form-edit/form-edit.component';
 
 @NgModule({
   imports: [
@@ -54,9 +54,9 @@ import { ClausesKitDetailComponent } from './clauses-kit-detail/clauses-kit-deta
     SecondTableComponent,
     StatusBarComponent,
     ClausesKitComponent,
-    ClausesKitDetailComponent
+    FormEditComponent
   ],
-  entryComponents: [ClausesKitDetailComponent
+  entryComponents: [FormEditComponent
   ],
   providers:    [ ClausesKitService
   ],

@@ -3,13 +3,21 @@
 </mat-toolbar>
 <div class="button-row">
   <button mat-raised-button
-          [disabled]="!selectedClausesKit"
+          [disabled]="!currentClausesKit"
           (click)="setKitCurrent()" color="primary">Select</button>
-  <app-clauses-kit></app-clauses-kit>
-</div>
+  <button mat-raised-button
+          (click)="openAddDialog()" color="primary">Add</button>
+  <button mat-raised-button
+          [disabled]="!currentClausesKit"
+          (click)="openEditDialog()" color="primary">Edit</button>
+  <button mat-raised-button
+          [disabled]="!currentClausesKit"
+          (click)="openDelDialog()" color="primary">Del</button>
+  </div>
 <div class="basic-container" *ngIf="clausesKit | async; let clausesKit; else loading;">
 
-<app-simple-table  (choiseRequest)="choiseEvent($event)" [parentSettings]="settingsToChild"
+<app-simple-table  (choiseRequest)="choiseEvent($event)"
+                   [parentSettings]="settingsToChild"
                    [state] = "clausesKit"
 ></app-simple-table>
 </div>

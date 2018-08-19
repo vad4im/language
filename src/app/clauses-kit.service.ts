@@ -3,8 +3,11 @@ import { Observable, of } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { catchError, map, tap } from 'rxjs/operators';
 import { EventEmitter} from '@angular/core';
-import { ClausesKit } from './clauseskit';
+import { ClausesKit } from './clausesKit';
 import { MessageService } from './message.service';
+const httpOptions = {
+  headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+};
 @Injectable({
   providedIn: 'root'
 })
@@ -30,7 +33,23 @@ export class ClausesKitService {
         catchError(this.handleError('getKitlist', []))
       );
   }
-
+  /** POST: add a new phrase to the server */
+  addClausesKit(clausesKit: ClausesKit): Observable<ClausesKit> {
+    this.log('clauses kit add: ' + clausesKit.clausesName + ' ' + clausesKit.id );
+    return this.http.post<ClausesKit>(this.resourceUrl,  clausesKit, httpOptions)
+      .pipe(
+        tap(data => this.log(`added kit w/ id=${data._id}`)),
+        catchError(this.handleError<ClausesKit>('addClausesKit'))
+      );
+  }
+  deleteClausesKit (clausesKit: ClausesKit): Observable<ClausesKit> {
+    console.log('Phrase.service.deletePhrase ');
+    const url = `${this.resourceUrl}/${clausesKit._id}`;
+    return this.http.delete<ClausesKit>(url, httpOptions).pipe(
+      tap(_ => this.log(`deleted phrase id=${clausesKit._id}`)),
+      catchError(this.handleError<ClausesKit>('deleteClausesKIT'))
+    );
+  }
   /**
    * Handle Http operation that failed.
    * Let the app continue.

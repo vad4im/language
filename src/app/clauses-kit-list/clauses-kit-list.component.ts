@@ -1,7 +1,11 @@
 import { Component, OnInit, EventEmitter, Output } from '@angular/core';
-import {ClausesKit} from '../clauseskit';
+import { Observable} from 'rxjs';
+import {MatDialog} from '@angular/material';
+
+import {ClausesKit} from '../clausesKit';
 import { ClausesKitService } from '../clauses-kit.service';
-import { Observable, of, Subscription } from 'rxjs';
+import {FormEditComponent} from '../form-edit/form-edit.component';
+
 
 @Component({
   selector: 'app-clauses-kit-list',
@@ -10,8 +14,9 @@ import { Observable, of, Subscription } from 'rxjs';
 })
 export class ClausesKitListComponent implements OnInit {
   selectedClausesKit: ClausesKit;
+  newClausesKit: ClausesKit = new ClausesKit;
+  currentClausesKit: ClausesKit;
   clausesKit: Observable<{}>;
-
   settingsToChild = {  pageStt: {pageSizeOptions: [1, 3, 9]
                      , showFirstLastButtons: true
                      , pageSize: 3
@@ -31,7 +36,8 @@ export class ClausesKitListComponent implements OnInit {
     sellVisible:  ['id', 'clausesName', 'origLang', 'translLang', 'sourceUrl' ]
   };
   constructor(private clausesKitService: ClausesKitService,
-              private share: ClausesKitService){
+              private share: ClausesKitService,
+              public dialog: MatDialog){
   }
 
   ngOnInit() {
@@ -40,21 +46,73 @@ export class ClausesKitListComponent implements OnInit {
   }
 
   choiseEvent(data){
-    this.selectedClausesKit = data.row;
-    // console.log(' Parent !!choise event!! enable is ' + this.buttonSetCurrent.enable);
+    if (data.isSelect) {
+      this.currentClausesKit = data.row;
+      this.currentClausesKit.id = data.cnt + 1;
+    }else {
+      this.currentClausesKit = null;
+    }
   }
+
   getClausesKit() {
+    this.currentClausesKit = null;
+    this.newClausesKit = new ClausesKit;
     this.clausesKit =  this.clausesKitService.getClausesKit();
   }
 
-  // getSelectedClausesKit(): ClausesKit {
-  //   console.log('clauses_kit_list.get_selectedClause._id: ' + this.selectedClausesKit._id);
-  //   return this.selectedClausesKit;
-  // }
-  addKit(){
-
+  addClausesKit(orig: ClausesKit): void {
+    // console.log('clauses.component.add : ' +  orig + ' - ' + this.clausesKit._id );
+    this.clausesKitService.addClausesKit(orig)
+      .subscribe(data => {
+        this.getClausesKit();
+      });
   }
-  setKitCurrent(data): void {
+
+  deleteClausesKit(rec : ClausesKit){
+    this.clausesKitService.deleteClausesKit(rec)
+      .subscribe( data => {
+         this.getClausesKit();
+      });
+  }
+
+  openDelDialog(): void {
+    this.deleteClausesKit(this.currentClausesKit);
+    this.getClausesKit();
+  }
+
+  openAddDialog(): void {
+    // console.log('Start dialog opening');
+    const dialogRef = this.dialog.open(FormEditComponent, {
+      width: '320px',
+      data: this.newClausesKit
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+      if (result) {
+        // this.currentClausesKit = result;
+        this.addClausesKit(result);
+      }
+    });
+  }
+
+  openEditDialog(): void {
+    // console.log('Start dialog opening');
+    const dialogRef = this.dialog.open(FormEditComponent, {
+      width: '320px',
+      data: this.currentClausesKit
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+      if (result) {
+        this.currentClausesKit = result;
+      }
+    });
+  }
+
+  setKitCurrent(data) : void {
+    this.selectedClausesKit = this.currentClausesKit;
     this.share.setCurrentKitName(this.selectedClausesKit);
   }
 

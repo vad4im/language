@@ -23,8 +23,8 @@ export class SimpleTableComponent implements OnInit, AfterViewInit  {
   choiseRequestEmit(row) {
     this.choiseRequest.emit(
       {
-        isSel: this.selection.isSelected(row),
-        cnt: this.selection.selected.length,
+        isSelect: this.selection.isSelected(row),
+        cnt: this.dataSource.data.length,
         row: row
       }
     );
