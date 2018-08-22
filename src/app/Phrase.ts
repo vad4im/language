@@ -11,13 +11,15 @@ export class Phrase  {
     translTr: string;
     origSound: string;
     translSound: string;
-      getFieldConfig(): FieldConfig[] {
-        return [
+  static getFieldConfig(data: Phrase): FieldConfig[] {
+        let retValue = [];
+  static const conf = [
           {
             type: 'input',
             label: 'Phrase',
             inputType: 'text',
             name: 'orig',
+            value:  'AAA',
             validations: [
               {
                 name: 'required',
@@ -35,27 +37,41 @@ export class Phrase  {
             type: 'input',
             label: 'Orign transcript',
             inputType: 'text',
-            name: 'origTr'
+            name: 'origTr',
+            value: ''
           },
           {
             type: 'input',
             label: 'Translate',
             inputType: 'text',
-            name: 'transl'
+            name: 'transl',
+            value: ''
           },
           {
             type: 'input',
             label: 'Translate transcr',
             inputType: 'text',
-            name: 'translTr'
+            name: 'translTr',
+            value: ''
           },
           {
             type: 'button',
             label: 'Save'
           }
-        ];
+        ]
+    conf.forEach(function (value) {
+      let v = value;
+      v['value'] = data[value.name];
+      retValue.push(v);
+      console.log('------------1 '+ data[value.name]);
+      console.log('------------2 '+ v.value);
+      console.log('------------3 '+ retValue.length);
+      // console.log('------------3 '+ retValue[1].value);
+    });
+    return retValue;
+  };
 
-  }
+
 
   }
 

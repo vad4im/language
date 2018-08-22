@@ -9,10 +9,14 @@
   <button mat-raised-button
           [disabled]="!currentClauses"
           (click)="openDelDialog()" >Del</button>
+
  <app-simple-table  (choiseRequest)="choiseEvent($event)"
                      [parentSettings]="settingsToChild"
                      [state] = "clauses"
   ></app-simple-table>
+
+  <!--<app-dyn-form></app-dyn-form>>  -->
+
 </div>
 <ng-template #loading>Loading User Data...</ng-template>
 

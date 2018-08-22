@@ -22,7 +22,18 @@ import { ClausesKitService } from './clauses-kit.service';
 import { SimpleTableComponent } from './simple-table/simple-table.component';
 import { SecondTableComponent } from './second-table/second-table.component';
 import { ClausesKitComponent } from './clauses-kit/clauses-kit.component';
- import { FormEditComponent } from './form-edit/form-edit.component';
+
+import { FormEditComponent } from './form-edit/form-edit.component';
+import { DynFormComponent} from './dyn-form/dyn-form.component';
+import { DynamicFormComponent } from './components/dynamic-form/dynamic-form.component';
+import { DynamicFieldDirective} from './components/dynamic-field/dynamic-field.directive';
+import {InputComponent} from './components/input/input.component';
+import {DateComponent} from './components/date/date.component';
+import {CheckboxComponent} from "./components/checkbox/checkbox.component";
+import {ButtonComponent} from "./components/button/button.component";
+import {RadiobuttonComponent} from "./components/radiobutton/radiobutton.component";
+import {SelectComponent} from "./components/select/select.component";
+
 
 @NgModule({
   imports: [
@@ -54,9 +65,27 @@ import { ClausesKitComponent } from './clauses-kit/clauses-kit.component';
     SecondTableComponent,
     StatusBarComponent,
     ClausesKitComponent,
-    FormEditComponent
+
+    FormEditComponent,
+    DynFormComponent,
+    DynamicFormComponent,
+    DynamicFieldDirective,
+    InputComponent,
+    DateComponent,
+    CheckboxComponent,
+    ButtonComponent,
+    RadiobuttonComponent,
+    SelectComponent
+
   ],
-  entryComponents: [FormEditComponent
+  entryComponents: [
+    FormEditComponent,
+    InputComponent,
+    DateComponent,
+    CheckboxComponent,
+    ButtonComponent,
+    RadiobuttonComponent,
+    SelectComponent
   ],
   providers:    [ ClausesKitService
   ],

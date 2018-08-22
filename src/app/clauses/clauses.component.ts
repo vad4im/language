@@ -4,8 +4,10 @@ import {Phrase} from '../Phrase';
 import { PhraseService } from '../phrase.service';
 import {ClausesKit} from '../clausesKit';
 import {ClausesKitService} from '../clauses-kit.service';
+
 import {FormEditComponent} from '../form-edit/form-edit.component';
 import {MatDialog} from '@angular/material';
+
 
 @Component({
   selector: 'app-clauses',
@@ -18,6 +20,7 @@ export class ClausesComponent implements OnInit {
   currentClauses: Phrase;
   newClauses: Phrase = new Phrase;
   clausesKit: ClausesKit;
+
   settingsToChild = {
     pageStt: {pageSizeOptions: [1, 3, 9],
       showFirstLastButtons: false,
@@ -42,8 +45,9 @@ export class ClausesComponent implements OnInit {
   };
 
   constructor(private phraseService: PhraseService,
-              private share: ClausesKitService,
-              public dialog: MatDialog) {
+              private share: ClausesKitService
+               , public dialog: MatDialog
+  ) {
 
     this.share.onClausesKitSetCurrent.subscribe(
        data  =>  this.getClausesOfRefChange(data)
@@ -85,25 +89,31 @@ export class ClausesComponent implements OnInit {
     this.delete(this.currentClauses);
     // this.getClausesKit();
   }
+
   openAddDialog(): void {
     console.log('Start dialog opening info :'  + this.newClauses.orig + ' ' + this.newClauses.clausesKitId);
+// ------------------------
     const dialogRef = this.dialog.open(FormEditComponent, {
       width: '320px',
-      data: {o: this.newClauses, i: this.newClauses.getStructure()}
+      data: this.newClauses
     });
     dialogRef.afterClosed().subscribe(result => {
-        console.log('The dialog was closed info: '  + result.orig + ' ' + result.clausesKitId);
         // this.currentClausesKit = result;
+      if (result) {
+        console.log('The dialog was closed info: '  + result.orig + ' ' + result.clausesKitId);
         this.add(result);
+      }
     });
+// ------------------------
   }
   openEditDialog(): void {
-    console.log('clauses openEditDialog data: ' + this.currentClauses.orig + ' ' + this.currentClauses.clausesKitId)
+    console.log('clauses openEditDialog data: ' + this.currentClauses.orig + ' ' + this.currentClauses.orig);
+    console.log('clauses openEditDialog fieldConfig.name: ' + Phrase.getFieldConfig(this.currentClauses)[1].value );
+// ------------------------
     const dialogRef = this.dialog.open(FormEditComponent, {
       width: '320px',
-      data: [{name: 'id', data: this.newClauses.id},
-        {name: '_ID', data: this.newClauses._id}
-        ]
+      data: this.currentClauses
+
     });
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
@@ -111,20 +121,21 @@ export class ClausesComponent implements OnInit {
         this.currentClauses = result;
       }
     });
+// ------------------------
   }
 
 
   choiseEvent(data){
     if (data.isSelect) {
-      console.log('clauses choise envent1 data: ' + data.row.orig + ' ' + data.row.clausesKitId)
+      // console.log('clauses choise envent1 data: ' + data.row.orig + ' ' + data.row.clausesKitId)
       this.currentClauses = data.row;
-      console.log('clauses choise envent1.5 data: ' + this.currentClauses.orig + ' ' + this.currentClauses.clausesKitId)
+      // console.log('clauses choise envent1.5 data: ' + this.currentClauses.orig + ' ' + this.currentClauses.clausesKitId)
       this.currentClauses.id = data.cnt + 1;
-      console.log('clauses choise envent2 data: ' + this.currentClauses.orig + ' ' + this.currentClauses.clausesKitId)
+      // console.log('clauses choise envent2 data: ' + this.currentClauses.orig + ' ' + this.currentClauses.clausesKitId)
     } else {
       this.currentClauses = null;
     }
-    console.log('clauses choise envent3 data: ' + this.currentClauses.orig + ' ' + this.currentClauses.clausesKitId)
+    // console.log('clauses choise envent3 data: ' + this.currentClauses.orig + ' ' + this.currentClauses.clausesKitId)
   }
 
 }

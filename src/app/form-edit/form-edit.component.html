@@ -1,18 +1,10 @@
-<h1 mat-dialog-title>{{data.clausesName}}</h1>
+<h1 mat-dialog-title></h1>
 <div mat-dialog-content>
-  <p>KIT detail : </p>
-  <form class="simple-form" *ngFor="let field of data; let i=index"  >
+  <!--<p>KIT detail : {{data._id}}</p>-->
 
-    <mat-form-field class="example-full-width">
-      <input  [formControl]="formControls[i]" ngDefaultControl
-               matInput placeholder={{field.name}} value={{field.notes}}
-              <!--[(ngModel)]="data.id" -->
-              <!--[ngModelOptions]="{standalone: true}"-->
-      >
-    </mat-form-field>
-
-    <!--<mat-form-field class="example-full-width">-->
-      <!--<input matInput placeholder="clauses name" [(ngModel)]="data.clausesName" [ngModelOptions]="{standalone: true}">-->
+  <!--<form class="simple-form"  >-->
+  <!--<mat-form-field class="example-full-width">-->
+      <!--<input matInput placeholder="_id" [(ngModel)]="data._id" [ngModelOptions]="{standalone: true}">-->
     <!--</mat-form-field>-->
     <!--<mat-form-field class="example-full-width">-->
       <!--<input matInput placeholder="Original language" [(ngModel)]="data.origLang" [ngModelOptions]="{standalone: true}">-->
@@ -23,8 +15,18 @@
     <!--<mat-form-field class="example-full-width">-->
       <!--<input matInput placeholder="URL of data source" [(ngModel)]="data.sourceUrl"  [ngModelOptions]="{standalone: true}" >-->
     <!--</mat-form-field>-->
+  <!--</form>-->
 
-  </form>
+  <div class="form">
+    <dynamic-form [fields]="regConfig" (submit)="submit($event)">
+    </dynamic-form>
+    <div class="margin-top">
+      {{ form.value | json }}
+    </div>
+  </div>
+
+
+
 </div>
 <div mat-dialog-actions>
   <button mat-button (click)="onNoClick()">No Thanks</button>

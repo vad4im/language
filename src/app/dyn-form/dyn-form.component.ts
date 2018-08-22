@@ -3,6 +3,7 @@ import { Validators } from '@angular/forms';
 import { FieldConfig } from '../field.interface';
 import { DynamicFormComponent } from '../components/dynamic-form/dynamic-form.component';
 
+
 @Component({
   selector: 'app-dyn-form',
   templateUrl: './dyn-form.component.html',
