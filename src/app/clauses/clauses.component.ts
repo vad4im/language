@@ -4,6 +4,8 @@ import {Phrase} from '../Phrase';
 import { PhraseService } from '../phrase.service';
 import {ClausesKit} from '../clausesKit';
 import {ClausesKitService} from '../clauses-kit.service';
+import {FormEditComponent} from '../form-edit/form-edit.component';
+import {MatDialog} from '@angular/material';
 
 @Component({
   selector: 'app-clauses',
@@ -14,6 +16,7 @@ export class ClausesComponent implements OnInit {
 
   clauses: Observable<{}>;
   currentClauses: Phrase;
+  newClauses: Phrase = new Phrase;
   clausesKit: ClausesKit;
   settingsToChild = {
     pageStt: {pageSizeOptions: [1, 3, 9],
@@ -39,17 +42,12 @@ export class ClausesComponent implements OnInit {
   };
 
   constructor(private phraseService: PhraseService,
-              private share: ClausesKitService) {
+              private share: ClausesKitService,
+              public dialog: MatDialog) {
 
     this.share.onClausesKitSetCurrent.subscribe(
-       data  =>  this.clausesKit = data
-       // console.log('clauses_component.clausesKit._id' + data._id);
+       data  =>  this.getClausesOfRefChange(data)
    );
-
-   if (this.clausesKit) {
-     console.log('Set Current in clauses id:'+ this.clausesKit._id);
-     this.getClausesOfRef(this.clausesKit._id);
-   };
   }
 
 
@@ -58,37 +56,75 @@ export class ClausesComponent implements OnInit {
     // this.getClauses();
   }
 
-  getClauses(): void {
+  getClauses(data): void {
     this.clauses =  this.phraseService.getClauses();
-    // this.phraseService.getClauses()
-    //   .subscribe(clauses => this.clauses = clauses);
   }
-  getClausesOfRef(id): void {
-    this.clauses =  this.phraseService.getClausesOfRef(id);
+
+  getClausesOfRefChange(parClausesKit: ClausesKit): void {
+    console.log('Clauses KIT ref change id:' + parClausesKit._id + ' load data ..');
+    this.clausesKit = parClausesKit;
+    this.currentClauses = null;
+    this.newClauses = new Phrase;
+    this.clauses =  this.phraseService.getClausesOfRef(this.clausesKit._id);
   }
-//
-//   add(orig: string): void {
-//     orig = orig.trim();
-//     if (!orig) { return; }
-// // console.log('clauses.component.add : ' +  orig + ' - ' + this.clausesKit._id );
-//     this.phraseService.addPhrase({id: this.clauses.length +1, orig: orig, clausesKitId: this.clausesKit._id } as Phrase)
-//       .subscribe(phrase => {
-//         this.clauses.push(phrase);
-//       });
-//   }
-//
-//   delete(phrase: Phrase): void {
-//     this.clauses = this.clauses.filter(h => h !== phrase);
-//     this.phraseService.deletePhrase(phrase).subscribe();
-//   }
+   add(phrase: Phrase): void {
+   console.log('clauses.component add phrase info: '  + phrase.orig + ' ' + phrase.clausesKitId );
+     this.phraseService.addPhrase(phrase)
+       .subscribe(retPhrase => {
+         // this.clauses.push(retPhrase);
+       });
+   }
+
+   delete(phrase: Phrase): void {
+     this.phraseService.deletePhrase(phrase).subscribe();
+   }
+
+
+
+  openDelDialog(): void {
+    this.delete(this.currentClauses);
+    // this.getClausesKit();
+  }
+  openAddDialog(): void {
+    console.log('Start dialog opening info :'  + this.newClauses.orig + ' ' + this.newClauses.clausesKitId);
+    const dialogRef = this.dialog.open(FormEditComponent, {
+      width: '320px',
+      data: {o: this.newClauses, i: this.newClauses.getStructure()}
+    });
+    dialogRef.afterClosed().subscribe(result => {
+        console.log('The dialog was closed info: '  + result.orig + ' ' + result.clausesKitId);
+        // this.currentClausesKit = result;
+        this.add(result);
+    });
+  }
+  openEditDialog(): void {
+    console.log('clauses openEditDialog data: ' + this.currentClauses.orig + ' ' + this.currentClauses.clausesKitId)
+    const dialogRef = this.dialog.open(FormEditComponent, {
+      width: '320px',
+      data: [{name: 'id', data: this.newClauses.id},
+        {name: '_ID', data: this.newClauses._id}
+        ]
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+      if (result) {
+        this.currentClauses = result;
+      }
+    });
+  }
+
 
   choiseEvent(data){
     if (data.isSelect) {
+      console.log('clauses choise envent1 data: ' + data.row.orig + ' ' + data.row.clausesKitId)
       this.currentClauses = data.row;
+      console.log('clauses choise envent1.5 data: ' + this.currentClauses.orig + ' ' + this.currentClauses.clausesKitId)
       this.currentClauses.id = data.cnt + 1;
-    }else {
+      console.log('clauses choise envent2 data: ' + this.currentClauses.orig + ' ' + this.currentClauses.clausesKitId)
+    } else {
       this.currentClauses = null;
     }
+    console.log('clauses choise envent3 data: ' + this.currentClauses.orig + ' ' + this.currentClauses.clausesKitId)
   }
 
 }

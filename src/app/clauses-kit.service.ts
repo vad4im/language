@@ -22,8 +22,8 @@ export class ClausesKitService {
               private http: HttpClient) {}
 
   public setCurrentKitName(clausesKit: ClausesKit) {
-    this.onClausesKitSetCurrent.emit(clausesKit);
     this.log('Current Kit Name selected value is: ' + clausesKit.clausesName);
+    this.onClausesKitSetCurrent.emit(clausesKit);
   }
 
   getClausesKit(): Observable<ClausesKit[]> {

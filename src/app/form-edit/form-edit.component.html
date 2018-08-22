@@ -1,22 +1,29 @@
 <h1 mat-dialog-title>{{data.clausesName}}</h1>
 <div mat-dialog-content>
   <p>KIT detail : </p>
-  <form class="simple-form"  >
+  <form class="simple-form" *ngFor="let field of data; let i=index"  >
+
     <mat-form-field class="example-full-width">
-      <input matInput placeholder="id" [(ngModel)]="data.id" [ngModelOptions]="{standalone: true}">
+      <input  [formControl]="formControls[i]" ngDefaultControl
+               matInput placeholder={{field.name}} value={{field.notes}}
+              <!--[(ngModel)]="data.id" -->
+              <!--[ngModelOptions]="{standalone: true}"-->
+      >
     </mat-form-field>
-    <mat-form-field class="example-full-width">
-      <input matInput placeholder="clauses name" [(ngModel)]="data.clausesName" [ngModelOptions]="{standalone: true}">
-    </mat-form-field>
-    <mat-form-field class="example-full-width">
-      <input matInput placeholder="Original language" [(ngModel)]="data.origLang" [ngModelOptions]="{standalone: true}">
-    </mat-form-field>
-    <mat-form-field class="example-full-width">
-      <input matInput placeholder="translate language" [(ngModel)]="data.translLang" [ngModelOptions]="{standalone: true}">
-    </mat-form-field>
-    <mat-form-field class="example-full-width">
-      <input matInput placeholder="URL of data source" [(ngModel)]="data.sourceUrl"  [ngModelOptions]="{standalone: true}" >
-    </mat-form-field>
+
+    <!--<mat-form-field class="example-full-width">-->
+      <!--<input matInput placeholder="clauses name" [(ngModel)]="data.clausesName" [ngModelOptions]="{standalone: true}">-->
+    <!--</mat-form-field>-->
+    <!--<mat-form-field class="example-full-width">-->
+      <!--<input matInput placeholder="Original language" [(ngModel)]="data.origLang" [ngModelOptions]="{standalone: true}">-->
+    <!--</mat-form-field>-->
+    <!--<mat-form-field class="example-full-width">-->
+      <!--<input matInput placeholder="translate language" [(ngModel)]="data.translLang" [ngModelOptions]="{standalone: true}">-->
+    <!--</mat-form-field>-->
+    <!--<mat-form-field class="example-full-width">-->
+      <!--<input matInput placeholder="URL of data source" [(ngModel)]="data.sourceUrl"  [ngModelOptions]="{standalone: true}" >-->
+    <!--</mat-form-field>-->
+
   </form>
 </div>
 <div mat-dialog-actions>

@@ -1,7 +1,15 @@
-<h2>My Clauses</h2>
-<div class="basic-container" *ngIf="clauses | async; let clauses; else loading;">
 
-  <app-simple-table  (choiseRequest)="choiseEvent($event)"
+<div class="basic-container" *ngIf="clauses | async; let clauses; else loading;">
+  <h2>My Clauses</h2>
+  <button mat-raised-button
+          (click)="openAddDialog()" >Add</button>
+  <button mat-raised-button
+          [disabled]="!currentClauses"
+          (click)="openEditDialog()" >Edit</button>
+  <button mat-raised-button
+          [disabled]="!currentClauses"
+          (click)="openDelDialog()" >Del</button>
+ <app-simple-table  (choiseRequest)="choiseEvent($event)"
                      [parentSettings]="settingsToChild"
                      [state] = "clauses"
   ></app-simple-table>

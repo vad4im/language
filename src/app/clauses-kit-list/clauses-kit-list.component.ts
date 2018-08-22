@@ -49,7 +49,7 @@ export class ClausesKitListComponent implements OnInit {
     if (data.isSelect) {
       this.currentClausesKit = data.row;
       this.currentClausesKit.id = data.cnt + 1;
-    }else {
+    } else {
       this.currentClausesKit = null;
     }
   }
@@ -114,6 +114,7 @@ export class ClausesKitListComponent implements OnInit {
   setKitCurrent(data) : void {
     this.selectedClausesKit = this.currentClausesKit;
     this.share.setCurrentKitName(this.selectedClausesKit);
+    console.log('ClauaesKITList.setKitCurrent');
   }
 
 }

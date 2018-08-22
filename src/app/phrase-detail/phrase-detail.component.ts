@@ -9,27 +9,27 @@ import { PhraseService } from '../phrase.service';
   templateUrl: './phrase-detail.component.html',
   styleUrls: ['./phrase-detail.component.css']
 })
-export class PhraseDetailComponent implements OnInit {
-  @Input() phrase: Phrase;
+export class PhraseDetailComponent  {
+  // @Input() phrase:  Phrase;
 
   constructor(  private route: ActivatedRoute,
                 private phraseService: PhraseService,
                 private location: Location) { }
+  a: string ='A'
+  // ngOnInit(): void {
+  //   this.getPhrase();
+  // }
 
-  ngOnInit(): void {
-    this.getPhrase();
-  }
-
-  save(): void {
-    this.phraseService.updatePhrase(this.phrase)
-      .subscribe(() => this.goBack());
-  }
-
-  getPhrase(): void {
-    const id = +this.route.snapshot.paramMap.get('id');
-    this.phraseService.getPhrase(id)
-      .subscribe(phrase => this.phrase = phrase);
-  }
+  // save(): void {
+  //   this.phraseService.updatePhrase(this.phrase)
+  //     .subscribe(() => this.goBack());
+  // }
+  //
+  // getPhrase(): void {
+  //   const id = +this.route.snapshot.paramMap.get('id');
+  //   this.phraseService.getPhrase(id)
+  //     .subscribe(phrase => this.phrase = phrase);
+  // }
 
   goBack(): void {
     this.location.back();

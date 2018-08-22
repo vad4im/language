@@ -33,7 +33,7 @@ console.log('Phrase.service.getClauses ');
   getClausesOfRef(ref): Observable<Phrase[]> {
     console.log('Phrase.service.getClauses of KIT ');
     const url = `${this.clausesUrl}Ref/${ref}`;
-    return this.http.get<Phrase[]>(this.clausesUrl)
+    return this.http.get<Phrase[]>(url)
       .pipe(
         tap(clauses => this.log('fetched Clauses by KIT Ref')),
         catchError(this.handleError('getClauses by kit Ref', []))
@@ -41,9 +41,9 @@ console.log('Phrase.service.getClauses ');
   }
 
 
-  deletePhrase (phrase: Phrase | number): Observable<Phrase> {
+  deletePhrase (phrase: Phrase): Observable<Phrase> {
     console.log('Phrase.service.deletePhrase ');
-    const id = typeof phrase === 'number' ? phrase : phrase._id;
+    const id = phrase._id;
     const url = `${this.clausesUrl}/${id}`;
     return this.http.delete<Phrase>(url, httpOptions).pipe(
       tap(_ => this.log(`deleted phrase id=${id}`)),

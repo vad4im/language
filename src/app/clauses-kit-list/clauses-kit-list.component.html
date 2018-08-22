@@ -1,18 +1,19 @@
-<mat-toolbar color="primary">
+<mat-toolbar >
+  <!--color="primary"-->
   Clauses kit list
 </mat-toolbar>
 <div class="button-row">
   <button mat-raised-button
           [disabled]="!currentClausesKit"
-          (click)="setKitCurrent()" color="primary">Select</button>
+          (click)="setKitCurrent()" >Select</button>
   <button mat-raised-button
-          (click)="openAddDialog()" color="primary">Add</button>
-  <button mat-raised-button
-          [disabled]="!currentClausesKit"
-          (click)="openEditDialog()" color="primary">Edit</button>
+          (click)="openAddDialog()" >Add</button>
   <button mat-raised-button
           [disabled]="!currentClausesKit"
-          (click)="openDelDialog()" color="primary">Del</button>
+          (click)="openEditDialog()" >Edit</button>
+  <button mat-raised-button
+          [disabled]="!currentClausesKit"
+          (click)="openDelDialog()" >Del</button>
   </div>
 <div class="basic-container" *ngIf="clausesKit | async; let clausesKit; else loading;">
 
