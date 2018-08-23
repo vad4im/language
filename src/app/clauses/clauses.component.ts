@@ -18,8 +18,9 @@ export class ClausesComponent implements OnInit {
 
   clauses: Observable<{}>;
   currentClauses: Phrase;
-  newClauses: Phrase = new Phrase;
+  newClauses: Phrase;
   clausesKit: ClausesKit;
+  formFields: string[] = ['clausesKitId', 'id', 'orig', 'origTr', 'transl', 'translTr'];
 
   settingsToChild = {
     pageStt: {pageSizeOptions: [1, 3, 9],
@@ -68,7 +69,7 @@ export class ClausesComponent implements OnInit {
     console.log('Clauses KIT ref change id:' + parClausesKit._id + ' load data ..');
     this.clausesKit = parClausesKit;
     this.currentClauses = null;
-    this.newClauses = new Phrase;
+    this.newClauses = new Phrase(this.clausesKit._id);
     this.clauses =  this.phraseService.getClausesOfRef(this.clausesKit._id);
   }
    add(phrase: Phrase): void {
@@ -91,46 +92,39 @@ export class ClausesComponent implements OnInit {
   }
 
   openAddDialog(): void {
-    console.log('Start dialog opening info :'  + this.newClauses.orig + ' ' + this.newClauses.clausesKitId);
-// ------------------------
     const dialogRef = this.dialog.open(FormEditComponent, {
       width: '320px',
-      data: this.newClauses
+      data: this.newClauses.getFieldConfig(this.formFields)
     });
     dialogRef.afterClosed().subscribe(result => {
-        // this.currentClausesKit = result;
       if (result) {
-        console.log('The dialog was closed info: '  + result.orig + ' ' + result.clausesKitId);
-        this.add(result);
+        // this.add(result);
+        this.newClauses = this.newClauses.deserialize(result);
+        this.add(this.newClauses);
       }
     });
-// ------------------------
   }
   openEditDialog(): void {
-    console.log('clauses openEditDialog data: ' + this.currentClauses.orig + ' ' + this.currentClauses.orig);
-    console.log('clauses openEditDialog fieldConfig.name: ' + Phrase.getFieldConfig(this.currentClauses)[1].value );
-// ------------------------
     const dialogRef = this.dialog.open(FormEditComponent, {
       width: '320px',
-      data: this.currentClauses
+      data: this.currentClauses.getFieldConfig(this.formFields)
 
     });
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
       if (result) {
-        this.currentClauses = result;
+
+        this.currentClauses = this.currentClauses.deserialize(result);
       }
     });
-// ------------------------
   }
 
 
   choiseEvent(data){
     if (data.isSelect) {
       // console.log('clauses choise envent1 data: ' + data.row.orig + ' ' + data.row.clausesKitId)
-      this.currentClauses = data.row;
+      this.currentClauses = new Phrase(this.newClauses.clausesKitId).deserialize(data.row);
       // console.log('clauses choise envent1.5 data: ' + this.currentClauses.orig + ' ' + this.currentClauses.clausesKitId)
-      this.currentClauses.id = data.cnt + 1;
+      this.newClauses.id = data.cnt + 1;
       // console.log('clauses choise envent2 data: ' + this.currentClauses.orig + ' ' + this.currentClauses.clausesKitId)
     } else {
       this.currentClauses = null;

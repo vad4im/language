@@ -1,21 +1,6 @@
 <h1 mat-dialog-title></h1>
 <div mat-dialog-content>
-  <!--<p>KIT detail : {{data._id}}</p>-->
 
-  <!--<form class="simple-form"  >-->
-  <!--<mat-form-field class="example-full-width">-->
-      <!--<input matInput placeholder="_id" [(ngModel)]="data._id" [ngModelOptions]="{standalone: true}">-->
-    <!--</mat-form-field>-->
-    <!--<mat-form-field class="example-full-width">-->
-      <!--<input matInput placeholder="Original language" [(ngModel)]="data.origLang" [ngModelOptions]="{standalone: true}">-->
-    <!--</mat-form-field>-->
-    <!--<mat-form-field class="example-full-width">-->
-      <!--<input matInput placeholder="translate language" [(ngModel)]="data.translLang" [ngModelOptions]="{standalone: true}">-->
-    <!--</mat-form-field>-->
-    <!--<mat-form-field class="example-full-width">-->
-      <!--<input matInput placeholder="URL of data source" [(ngModel)]="data.sourceUrl"  [ngModelOptions]="{standalone: true}" >-->
-    <!--</mat-form-field>-->
-  <!--</form>-->
 
   <div class="form">
     <dynamic-form [fields]="regConfig" (submit)="submit($event)">
@@ -30,5 +15,5 @@
 </div>
 <div mat-dialog-actions>
   <button mat-button (click)="onNoClick()">No Thanks</button>
-  <button mat-button [mat-dialog-close]="data" cdkFocusInitial>Ok</button>
+  <button mat-button [mat-dialog-close]="form.value" cdkFocusInitial>Ok</button>
 </div>
