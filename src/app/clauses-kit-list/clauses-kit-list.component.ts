@@ -25,13 +25,13 @@ export class ClausesKitListComponent implements OnInit {
                    multiselect: false
                   },
     sort: {active: 'id', direction: 'desc' },
-    cell:
-      [ {name: '_id', def: '_ID'},
-            {name: 'id', def: 'ID'},
-            {name: 'clausesName', def: 'Name'},
-            {name: 'origLang', def: 'sLang'},
-            {name: 'translLang', def: 'dLang'},
-            {name: 'sourceUrl', def: 'URL'},
+    cells:
+      [ {name: '_id', label: '_ID'},
+            {name: 'id', label: 'ID'},
+            {name: 'clausesName', label: 'Name'},
+            {name: 'origLang', label: 'sLang'},
+            {name: 'translLang', label: 'dLang'},
+            {name: 'sourceUrl', label: 'URL'},
            ],
     sellVisible:  ['id', 'clausesName', 'origLang', 'translLang', 'sourceUrl' ]
   };

@@ -18,8 +18,8 @@
   </ng-container>
 
 
-  <ng-container *ngFor="let col of parentSettings.cell"  [matColumnDef]="col.name">
-    <mat-header-cell *matHeaderCellDef mat-sort-header> {{col.def}} </mat-header-cell>
+  <ng-container *ngFor="let col of parentSettings.cells"  [matColumnDef]="col.name">
+    <mat-header-cell *matHeaderCellDef mat-sort-header> {{col.label}} </mat-header-cell>
     <mat-cell *matCellDef="let row"> {{row[col.name]}} </mat-cell>
   </ng-container>
 

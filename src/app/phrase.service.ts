@@ -21,15 +21,6 @@ export class PhraseService {
     // ,private clausesKitListComponent: ClausesKitListComponent
   ) { }
 
-
-  getClauses(): Observable<Phrase[]> {
-console.log('Phrase.service.getClauses ');
-    return this.http.get<Phrase[]>(this.clausesUrl)
-      .pipe(
-        tap(clauses => this.log('fetched Clauses')),
-        catchError(this.handleError('getClauses', []))
-      );
-  }
   getClausesOfRef(ref): Observable<Phrase[]> {
     console.log('Phrase.service.getClauses of KIT ');
     const url = `${this.clausesUrl}Ref/${ref}`;
@@ -39,8 +30,6 @@ console.log('Phrase.service.getClauses ');
         catchError(this.handleError('getClauses by kit Ref', []))
       );
   }
-
-
   deletePhrase (phrase: Phrase): Observable<Phrase> {
     console.log('Phrase.service.deletePhrase ');
     const id = phrase._id;
@@ -52,7 +41,7 @@ console.log('Phrase.service.getClauses ');
   }
   /** POST: add a new phrase to the server */
   addPhrase(phrase: Phrase): Observable<Phrase> {
-console.log('Phrase.service.addPhrase: ' + phrase.orig + ' ' + phrase.clausesKitId );
+    console.log('Phrase.service.addPhrase: ' + phrase.orig + ' ' + phrase.clausesKitId );
     return this.http.post<Phrase>(this.clausesUrl,  phrase, httpOptions)
       .pipe(
         tap(phrase2 => this.log('added phrase w/ id=${phrase2.id}`')),
@@ -60,6 +49,26 @@ console.log('Phrase.service.addPhrase: ' + phrase.orig + ' ' + phrase.clausesKit
       );
   }
 
+  getClauses(): Observable<Phrase[]> {
+console.log('Phrase.service.getClauses ');
+    return this.http.get<Phrase[]>(this.clausesUrl)
+      .pipe(
+        tap(clauses => this.log('fetched Clauses')),
+        catchError(this.handleError('getClauses', []))
+      );
+  }
+  /** PUT: update the phrase on the server */
+  updatePhrase (phrase: Phrase): Observable<any> {
+    console.log('Phrase.service.updatePhrase _id:' + phrase.orig);
+    const id = phrase._id;
+    const url = `${this.clausesUrl}/${id}`;
+    return this.http.put<Phrase>(url, phrase, httpOptions).pipe(
+      tap(_ => this.log(`updated phrase id=${phrase.orig}`)),
+      catchError(this.handleError<any>('updatePhrase'))
+    );
+  }
+
+// ------------------
 
   searchClauses(term: string): Observable<Phrase[]> {
     console.log('Phrase.service.searchClauses ');
@@ -72,7 +81,6 @@ console.log('Phrase.service.addPhrase: ' + phrase.orig + ' ' + phrase.clausesKit
       catchError(this.handleError<Phrase[]>('searchClauses', []))
     );
   }
-
   /** GET phrase by id. Will 404 if id not found */
   getPhrase(id: number): Observable<Phrase> {
     console.log('Phrase.service.getPhrase ');
@@ -82,17 +90,7 @@ console.log('Phrase.service.addPhrase: ' + phrase.orig + ' ' + phrase.clausesKit
       catchError(this.handleError<Phrase>(`getPhrase id=${id}`))
     );
   }
-
-  /** PUT: update the phrase on the server */
-  updatePhrase (phrase: Phrase): Observable<any> {
-    console.log('Phrase.service.updatePhrase ');
-    return this.http.put(this.clausesUrl, phrase, httpOptions).pipe(
-      tap(_ => this.log(`updated phrase id=${phrase.id}`)),
-      catchError(this.handleError<any>('updatePhrase'))
-    );
-  }
-
-
+// ------------------
 
   /**
    * Handle Http operation that failed.

@@ -15,35 +15,15 @@ import {MatDialog} from '@angular/material';
   styleUrls: ['./clauses.component.css']
 })
 export class ClausesComponent implements OnInit {
-
+  allTypeKitClausesSelect: boolean;
   clauses: Observable<{}>;
   currentClauses: Phrase;
   newClauses: Phrase;
   clausesKit: ClausesKit;
-  formFields: string[] = ['clausesKitId', 'id', 'orig', 'origTr', 'transl', 'translTr'];
 
-  settingsToChild = {
-    pageStt: {pageSizeOptions: [1, 3, 9],
-      showFirstLastButtons: false,
-      pageSize: 6,
-    },
-    checkColumn: { name: 'check',
-      multiselect: false
-    },
-    sort: {active: 'id', direction: 'desc' },
-    cell:[
-        {name: '_id', def: '_id'},
-        {name: 'clausesKitId', def: 'clausesKitId'},
-        {name: 'id', def: 'id'},
-        {name: 'orig', def: 'orig'},
-        {name: 'origTr', def: 'origTr'},
-        {name: 'transl', def: 'transl'},
-        {name: 'translTr', def: 'translTr'},
-        {name: 'origSound', def: 'origSound'},
-        {name: 'translSound', def: 'translSound'}
-      ],
-    sellVisible:  ['id', 'orig', 'origTr', 'transl', 'translTr' ]
-  };
+  formFields: string[] = ['clausesKitId', 'id', 'orig', 'origTr', 'transl', 'translTr'];
+  tableFields: string[] = ['id', 'orig', 'origTr', 'transl', 'translTr' ];
+  settingsToChild: any;
 
   constructor(private phraseService: PhraseService,
               private share: ClausesKitService
@@ -51,85 +31,106 @@ export class ClausesComponent implements OnInit {
   ) {
 
     this.share.onClausesKitSetCurrent.subscribe(
-       data  =>  this.getClausesOfRefChange(data)
+       data  =>  this.onRefChange(data)
    );
   }
 
 
   ngOnInit() {
-    this.settingsToChild.sellVisible.unshift(this.settingsToChild.checkColumn.name);
+    this.settingsToChild = Phrase.createTableViewConf(this.tableFields, false );
+    this.allTypeKitClausesSelect = false;
+
     // this.getClauses();
+    //  for (const key in this.settingsToChild) {
+    //      console.log( "Ключ: " + key + " значение: " + this.settingsToChild[key] );
+    //      for (const key2 in this.settingsToChild[key]){
+    //        console.log( "Ключ: " + key2 + " значение: " + this.settingsToChild[key][key2] );
+    //      };
+    //  };
+
   }
 
-  getClauses(data): void {
-    this.clauses =  this.phraseService.getClauses();
-  }
-
-  getClausesOfRefChange(parClausesKit: ClausesKit): void {
+  onRefChange(parClausesKit: ClausesKit): void {
     console.log('Clauses KIT ref change id:' + parClausesKit._id + ' load data ..');
     this.clausesKit = parClausesKit;
     this.currentClauses = null;
     this.newClauses = new Phrase(this.clausesKit._id);
-    this.clauses =  this.phraseService.getClausesOfRef(this.clausesKit._id);
+    this.getClauses();
   }
-   add(phrase: Phrase): void {
+
+  getClauses() {
+    if (this.allTypeKitClausesSelect) {
+      this.clauses = this.phraseService.getClauses();
+    } else {
+      this.clauses = this.phraseService.getClausesOfRef(this.clausesKit._id);
+    }
+  }
+
+   addClauses(phrase: Phrase): Observable<any> {
    console.log('clauses.component add phrase info: '  + phrase.orig + ' ' + phrase.clausesKitId );
-     this.phraseService.addPhrase(phrase)
-       .subscribe(retPhrase => {
-         // this.clauses.push(retPhrase);
-       });
+     return this.phraseService.addPhrase(phrase);
+       // .subscribe(retPhrase => {this.clauses.push(retPhrase);   });
    }
 
-   delete(phrase: Phrase): void {
-     this.phraseService.deletePhrase(phrase).subscribe();
+   deleteClauses(phrase: Phrase): Observable<any> {
+     return this.phraseService.deletePhrase(phrase);
+       // .subscribe();
    }
 
-
+   updateClauses(phrase: Phrase): Observable<any> {
+     return this.phraseService.updatePhrase(phrase);
+       // .subscribe();
+   }
 
   openDelDialog(): void {
-    this.delete(this.currentClauses);
-    // this.getClausesKit();
+    this.deleteClauses(this.currentClauses)
+      .subscribe( data => {
+          // del from array ???
+          this.getClauses();
+        }
+      );
   }
 
   openAddDialog(): void {
     const dialogRef = this.dialog.open(FormEditComponent, {
       width: '320px',
-      data: this.newClauses.getFieldConfig(this.formFields)
+      data: Phrase.createFieldsEditListConf(this.newClauses, this.formFields)
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        // this.add(result);
-        this.newClauses = this.newClauses.deserialize(result);
-        this.add(this.newClauses);
+        this.addClauses(Phrase.getEditedFieldsList(this.newClauses, result))
+          .subscribe(
+            data => {
+              // add to array ???
+              this.getClauses();
+            }
+          )
       }
     });
   }
   openEditDialog(): void {
     const dialogRef = this.dialog.open(FormEditComponent, {
       width: '320px',
-      data: this.currentClauses.getFieldConfig(this.formFields)
-
+      data: Phrase.createFieldsEditListConf(this.currentClauses, this.formFields)
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-
-        this.currentClauses = this.currentClauses.deserialize(result);
+        this.updateClauses(Phrase.getEditedFieldsList(this.currentClauses, result))
+            .subscribe(
+               data => {Phrase.serialize(this.currentClauses, data);}
+        );
       }
     });
   }
 
 
-  choiseEvent(data){
+  choiseEvent(data) {
     if (data.isSelect) {
-      // console.log('clauses choise envent1 data: ' + data.row.orig + ' ' + data.row.clausesKitId)
-      this.currentClauses = new Phrase(this.newClauses.clausesKitId).deserialize(data.row);
-      // console.log('clauses choise envent1.5 data: ' + this.currentClauses.orig + ' ' + this.currentClauses.clausesKitId)
+      this.currentClauses = data.row;
       this.newClauses.id = data.cnt + 1;
-      // console.log('clauses choise envent2 data: ' + this.currentClauses.orig + ' ' + this.currentClauses.clausesKitId)
     } else {
       this.currentClauses = null;
     }
-    // console.log('clauses choise envent3 data: ' + this.currentClauses.orig + ' ' + this.currentClauses.clausesKitId)
   }
 
 }
