@@ -1,4 +1,7 @@
 http://plnkr.co/edit/iGsdO2qoRWzzGFV12M1A?p=preview
+https://javascript.ru/forum/angular/52924-gde-khranit-dannye-poluchennye-ot-servera.html
+http://qaru.site/questions/108947/caching-results-with-angular2-http-service
+https://code.i-harness.com/ru/q/20863d5
 
 
 # Language
