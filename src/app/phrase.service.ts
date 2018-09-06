@@ -31,9 +31,9 @@ export class PhraseService {
       );
   }
   deletePhrase (phrase: Phrase): Observable<Phrase> {
-    console.log('Phrase.service.deletePhrase ');
     const id = phrase._id;
     const url = `${this.clausesUrl}/${id}`;
+    console.log('Phrase.service.deletePhrase url' + url);
     return this.http.delete<Phrase>(url, httpOptions).pipe(
       tap(_ => this.log(`deleted phrase id=${id}`)),
       catchError(this.handleError<Phrase>('deletePhrase'))

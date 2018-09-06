@@ -33,6 +33,8 @@ import {CheckboxComponent} from "./components/checkbox/checkbox.component";
 import {ButtonComponent} from "./components/button/button.component";
 import {RadiobuttonComponent} from "./components/radiobutton/radiobutton.component";
 import {SelectComponent} from "./components/select/select.component";
+import { FileUploadComponent } from './file-upload/file-upload.component';
+import { FormImportComponent } from './form-import/form-import.component';
 
 
 @NgModule({
@@ -75,10 +77,13 @@ import {SelectComponent} from "./components/select/select.component";
     CheckboxComponent,
     ButtonComponent,
     RadiobuttonComponent,
-    SelectComponent
+    SelectComponent,
+    FileUploadComponent,
+    FormImportComponent
 
   ],
   entryComponents: [
+    FormImportComponent,
     FormEditComponent,
     InputComponent,
     DateComponent,

@@ -17,31 +17,20 @@ export class ClausesKitListComponent implements OnInit {
   newClausesKit: ClausesKit = new ClausesKit;
   currentClausesKit: ClausesKit;
   clausesKit: Observable<{}>;
-  settingsToChild = {  pageStt: {pageSizeOptions: [1, 3, 9]
-                     , showFirstLastButtons: true
-                     , pageSize: 3
-                     },
-    checkColumn: { name: 'check',
-                   multiselect: false
-                  },
-    sort: {active: 'id', direction: 'desc' },
-    cells:
-      [ {name: '_id', label: '_ID'},
-            {name: 'id', label: 'ID'},
-            {name: 'clausesName', label: 'Name'},
-            {name: 'origLang', label: 'sLang'},
-            {name: 'translLang', label: 'dLang'},
-            {name: 'sourceUrl', label: 'URL'},
-           ],
-    sellVisible:  ['id', 'clausesName', 'origLang', 'translLang', 'sourceUrl' ]
-  };
+
+  formFields: string[] = ['clausesKitId', 'clausesName', 'origLang', 'translLang', 'sourceUrl'];
+  tableFields: string[] = ['id', 'clausesName', 'origLang', 'translLang', 'sourceUrl' ];
+
+  settingsToChild: any;
+
   constructor(private clausesKitService: ClausesKitService,
               private share: ClausesKitService,
               public dialog: MatDialog){
   }
 
   ngOnInit() {
-    this.settingsToChild.sellVisible.unshift(this.settingsToChild.checkColumn.name);
+    this.settingsToChild = ClausesKit.createTableViewConf(this.tableFields, false );
+    // this.settingsToChild.sellVisible.unshift(this.settingsToChild.checkColumn.name);
     this.getClausesKit();
   }
 
@@ -60,53 +49,54 @@ export class ClausesKitListComponent implements OnInit {
     this.clausesKit =  this.clausesKitService.getClausesKit();
   }
 
-  addClausesKit(orig: ClausesKit): void {
+  addClausesKit(orig: ClausesKit): Observable<any>{
     // console.log('clauses.component.add : ' +  orig + ' - ' + this.clausesKit._id );
-    this.clausesKitService.addClausesKit(orig)
-      .subscribe(data => {
-        this.getClausesKit();
-      });
+    return this.clausesKitService.addClausesKit(orig);
   }
 
-  deleteClausesKit(rec : ClausesKit){
-    this.clausesKitService.deleteClausesKit(rec)
-      .subscribe( data => {
-         this.getClausesKit();
-      });
+  deleteClausesKit(rec : ClausesKit): Observable<any>{
+    return this.clausesKitService.deleteClausesKit(rec);
   }
-
+  updateClausesKit(rec : ClausesKit): Observable<any> {
+    return this.clausesKitService.updateClausesKit(rec);
+  }
   openDelDialog(): void {
-    this.deleteClausesKit(this.currentClausesKit);
-    this.getClausesKit();
+    this.deleteClausesKit(this.currentClausesKit)
+      .subscribe( data => {
+        // del from array ???
+        this.getClausesKit();
+      }
+    );
   }
 
   openAddDialog(): void {
-    // console.log('Start dialog opening');
     const dialogRef = this.dialog.open(FormEditComponent, {
       width: '320px',
-      data: this.newClausesKit
+      data: ClausesKit.createFieldsEditListConf(this.newClausesKit, this.formFields)
     });
-
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
       if (result) {
-        // this.currentClausesKit = result;
-        this.addClausesKit(result);
+        this.addClausesKit(ClausesKit.getEditedFieldsList(this.newClausesKit, result))
+          .subscribe(
+            data => {
+              // add to array ???
+              this.getClausesKit();
+            }
+          )
       }
     });
   }
-
   openEditDialog(): void {
-    // console.log('Start dialog opening');
     const dialogRef = this.dialog.open(FormEditComponent, {
       width: '320px',
-      data: this.currentClausesKit
+      data: ClausesKit.createFieldsEditListConf(this.currentClausesKit, this.formFields)
     });
-
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
       if (result) {
-        this.currentClausesKit = result;
+        this.updateClausesKit(ClausesKit.getEditedFieldsList(this.currentClausesKit, result))
+          .subscribe(
+            data => {ClausesKit.serialize(this.currentClausesKit, data);}
+          );
       }
     });
   }

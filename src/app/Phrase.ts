@@ -56,12 +56,6 @@ export class Phrase {
     }
     return retValue;
   }
-  static getEditedFieldsList(phrase: Phrase, input): Phrase {
-        const editedPhrase = new Phrase(phrase.clausesKitId);
-        Phrase.serialize(editedPhrase, phrase);
-        Phrase.serialize(editedPhrase, input);
-        return editedPhrase;
-  }
 
   static serialize(phrase: Phrase, input ) {
 console.log('Phrase deserialize - input.orig :' + input.orig );
@@ -74,6 +68,12 @@ console.log('Phrase deserialize - input.orig :' + input.orig );
     if (typeof input.translTr !== 'undefined') {phrase.translTr = input.translTr;}
     if (typeof input.origSound !== 'undefined') {phrase.origSound = input.origSound;}
     if (typeof input.translSound !== 'undefined') {phrase.translSound = input.translSound;}
+  }
+  public getEditedFieldsList(input): Phrase {
+    const editedPhrase = new Phrase(this.clausesKitId);
+    Phrase.serialize(editedPhrase, this);
+    Phrase.serialize(editedPhrase, input);
+    return editedPhrase;
   }
   }
 

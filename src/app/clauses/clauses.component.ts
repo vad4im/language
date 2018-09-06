@@ -1,13 +1,17 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
+// import { Observable } from 'rxjs';
+
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/observable/forkJoin';
+
 import {Phrase} from '../Phrase';
 import { PhraseService } from '../phrase.service';
 import {ClausesKit} from '../clausesKit';
 import {ClausesKitService} from '../clauses-kit.service';
 
-import {FormEditComponent} from '../form-edit/form-edit.component';
-import {MatDialog} from '@angular/material';
-
+import { FormEditComponent } from '../form-edit/form-edit.component';
+import { FormImportComponent } from '../form-import/form-import.component';
+import { MatDialog } from '@angular/material';
 
 @Component({
   selector: 'app-clauses',
@@ -66,10 +70,14 @@ export class ClausesComponent implements OnInit {
     }
   }
 
-   addClauses(phrase: Phrase): Observable<any> {
-   console.log('clauses.component add phrase info: '  + phrase.orig + ' ' + phrase.clausesKitId );
-     return this.phraseService.addPhrase(phrase);
-       // .subscribe(retPhrase => {this.clauses.push(retPhrase);   });
+   addClausesList(clauses): Observable<Phrase[]> {
+   // console.log('clauses.component add phrase info: '  + phrase.orig + ' ' + phrase.clausesKitId );
+     const resultObservables = [];
+     for (let i = 0; i < clauses.length; i++ ) {
+       const response = this.phraseService.addPhrase(this.newClauses.getEditedFieldsList(clauses[i]));
+       resultObservables.push(response);
+     }
+     return Observable.forkJoin(resultObservables);
    }
 
    deleteClauses(phrase: Phrase): Observable<any> {
@@ -91,6 +99,24 @@ export class ClausesComponent implements OnInit {
       );
   }
 
+  openAddListDialog(): void {
+    const dialogRef = this.dialog.open(FormImportComponent, {
+      width: '700px',
+      data: this.newClauses
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('open Add List Dialog result.length:' + result.length);
+    });
+
+    // const clausesList = [{orig: 'word1', transl: 'слово1'}, {orig: 'word2', transl: 'слово2'}];
+    // this.addClausesList(clausesList)
+    //   .subscribe( data => {
+    //     this.getClauses();
+    //   }
+    //   );
+
+  }
+
   openAddDialog(): void {
     const dialogRef = this.dialog.open(FormEditComponent, {
       width: '320px',
@@ -98,13 +124,13 @@ export class ClausesComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.addClauses(Phrase.getEditedFieldsList(this.newClauses, result))
+        this.phraseService.addPhrase(this.newClauses.getEditedFieldsList(result) )
           .subscribe(
             data => {
               // add to array ???
               this.getClauses();
             }
-          )
+          );
       }
     });
   }
@@ -115,9 +141,9 @@ export class ClausesComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.updateClauses(Phrase.getEditedFieldsList(this.currentClauses, result))
+        this.updateClauses((result as Phrase).getEditedFieldsList(this.currentClauses))
             .subscribe(
-               data => {Phrase.serialize(this.currentClauses, data);}
+               data => {Phrase.serialize(this.currentClauses, data); }
         );
       }
     });

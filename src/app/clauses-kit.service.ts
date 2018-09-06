@@ -42,14 +42,28 @@ export class ClausesKitService {
         catchError(this.handleError<ClausesKit>('addClausesKit'))
       );
   }
-  deleteClausesKit (clausesKit: ClausesKit): Observable<ClausesKit> {
-    console.log('Phrase.service.deletePhrase ');
-    const url = `${this.resourceUrl}/${clausesKit._id}`;
-    return this.http.delete<ClausesKit>(url, httpOptions).pipe(
-      tap(_ => this.log(`deleted phrase id=${clausesKit._id}`)),
-      catchError(this.handleError<ClausesKit>('deleteClausesKIT'))
+  deleteClausesKit (kit: ClausesKit): Observable<any> {
+    const id = kit._id;
+    const url = `${this.resourceUrl}/${id}`;
+    console.log('ClausesKit.service.del teclauses Kit url:' + url);
+      return this.http.delete<ClausesKit>(url, httpOptions)
+       .pipe(
+             tap(_ => this.log(`deleted ClausesKit id=${kit.clausesName}`)),
+             catchError(this.handleError<ClausesKit>('deleteClausesKIT'))
+    );
+
+  }
+  updateClausesKit (kit: ClausesKit): Observable<any> {
+    console.log('ClausesKit.service.updateClausesKit _id:' + kit._id);
+    const id = kit._id;
+    const url = `${this.resourceUrl}/${id}`;
+    return this.http.put<ClausesKit>(url, kit, httpOptions)
+      .pipe(
+            tap(_ => this.log(`updated kit id=${kit.clausesName}`)),
+            catchError(this.handleError<any>('updateClausesKit'))
     );
   }
+
   /**
    * Handle Http operation that failed.
    * Let the app continue.
