@@ -35,6 +35,9 @@ import {RadiobuttonComponent} from "./components/radiobutton/radiobutton.compone
 import {SelectComponent} from "./components/select/select.component";
 import { FileUploadComponent } from './file-upload/file-upload.component';
 import { FormImportComponent } from './form-import/form-import.component';
+import { CvsParse } from './components/parse-data/csv-parse.component';
+import {CsvUtil} from './components/parse-data/csv-util';
+import {CsvConf} from './components/parse-data/csv-conf';
 
 
 @NgModule({
@@ -92,8 +95,12 @@ import { FormImportComponent } from './form-import/form-import.component';
     RadiobuttonComponent,
     SelectComponent
   ],
-  providers:    [ ClausesKitService
-  ],
+  providers:    [
+    ClausesKitService,
+    CvsParse,
+    CsvUtil,
+    CsvConf
+      ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

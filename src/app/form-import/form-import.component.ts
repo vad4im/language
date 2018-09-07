@@ -2,6 +2,7 @@ import { Component, OnInit, Inject } from '@angular/core';
 import {MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
+import { CvsParse } from '../components/parse-data/csv-parse.component';
 
 @Component({
   selector: 'app-form-import',
@@ -10,7 +11,8 @@ import 'rxjs/add/observable/of';
 })
 export class FormImportComponent implements OnInit {
 
-  constructor(public dialogRef: MatDialogRef<FormImportComponent>,
+  constructor(public _cvsParse: CvsParse,
+              public dialogRef: MatDialogRef<FormImportComponent>,
               @Inject(MAT_DIALOG_DATA)    public data: any
   ) { }
 
@@ -46,29 +48,50 @@ export class FormImportComponent implements OnInit {
   }
 
   public createData() {
-    this.resultData = this.convertData(this.getFileData());
+    this.getFileData()
+      .subscribe( data => {
+          // del from array ???
+        this.resultData = this.convertData(data);
+        }
+      );
   }
 
   public convertData(inData: string): Observable<any> {
-    const tmpData = [{orig: 'word1', transl: 'слово1'}, {orig: 'word2', transl: 'слово2'}];
+    const tmpData =  this._cvsParse.getConvertData( inData, {headerDef: ['orig', 'transl'],
+                                                             cellDef: ['orig', 'transl']});
+       // [{orig: 'word1', transl: 'слово1'}, {orig: 'word2', transl: 'слово2'}];
     return Observable.of(tmpData);
 }
 
-  public getFileData(): string {
-    let csv: string = null;
-    // console.log(this.targetFile);
+  public getFileData(): Observable<string> {
+
+    // let csv: string = null;
+    // if (this.targetFile && this.targetFile.length > 0) {
+    //   const file: File = this.targetFile.item(0);
+    //    // console.log(file.name);
+    //    // console.log(file.size);
+    //    // console.log(file.type);
+    //   const reader: FileReader = new FileReader();
+    //   reader.readAsText(file);
+    //   reader.onload = (e) => {
+    //      csv = reader.result;
+    //      // console.log(reader.result);
+    //   };
+    // }
+    // return csv;
+
+    // let csv: string = null;
     if (this.targetFile && this.targetFile.length > 0) {
       const file: File = this.targetFile.item(0);
-      // console.log(file.name);
-      // console.log(file.size);
-      // console.log(file.type);
-      const reader: FileReader = new FileReader();
-      reader.readAsText(file);
-      reader.onload = (e) => {
-         csv = reader.result;
-      };
+      return Observable.create((observable) => {
+        const fileReader = new FileReader;
+        fileReader.readAsText(file);
+        fileReader.onload = (() => {
+          observable.next(fileReader.result);
+          observable.complete();
+        });
+      });
     }
-    return csv;
   }
 
   onNoClick(): void { this.dialogRef.close(); }
