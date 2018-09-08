@@ -59,12 +59,12 @@ export class CsvUtil {
     return fileHeaderMatchFlag;
   }
 
-  convertJson(desc, data): any {
+  convertObject(desc, data): any {
     const ret = new Object();
-    for (let i = 0; i < desc.length; i++){
+    for (let i = 0; i < desc.length; i++) {
       ret[desc[i]] = data[i];
     }
-    return JSON.stringify(ret);
+    return ret;
   }
 
   getDataJson(csvRecordsArray, csvConf) {
@@ -81,9 +81,9 @@ export class CsvUtil {
           return null;
         }
       }
-      dataArr.push(this.convertJson(csvConf.csvRows.cellDef, data));
+      dataArr.push(this.convertObject(csvConf.csvRows.cellDef, data));
     }
-    return dataArr;
+     return dataArr;
   }
 
 }

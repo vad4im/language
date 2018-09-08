@@ -38,7 +38,6 @@ export class CvsParse  {
         this._csvConf.csvRows.headerDef = this._fileUtil.getHeaderArray(csvRecordsArray, this._csvConf);
         this._csvConf.csvRows.headerLength = this._csvConf.csvRows.headerDef.length;
       }
-      // console.log( csvRecordsArray);
       return this._fileUtil.getDataJson(csvRecordsArray, this._csvConf);
   }
 

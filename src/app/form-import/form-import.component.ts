@@ -64,23 +64,6 @@ export class FormImportComponent implements OnInit {
 }
 
   public getFileData(): Observable<string> {
-
-    // let csv: string = null;
-    // if (this.targetFile && this.targetFile.length > 0) {
-    //   const file: File = this.targetFile.item(0);
-    //    // console.log(file.name);
-    //    // console.log(file.size);
-    //    // console.log(file.type);
-    //   const reader: FileReader = new FileReader();
-    //   reader.readAsText(file);
-    //   reader.onload = (e) => {
-    //      csv = reader.result;
-    //      // console.log(reader.result);
-    //   };
-    // }
-    // return csv;
-
-    // let csv: string = null;
     if (this.targetFile && this.targetFile.length > 0) {
       const file: File = this.targetFile.item(0);
       return Observable.create((observable) => {
