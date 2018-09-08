@@ -68,7 +68,7 @@ export class FormImportComponent implements OnInit {
       const file: File = this.targetFile.item(0);
       return Observable.create((observable) => {
         const fileReader = new FileReader;
-        fileReader.readAsText(file);
+        fileReader.readAsText(file, 'windows-1251'); //'UTF-8' !!!!!!!!!!!!!!!!!!!!!
         fileReader.onload = (() => {
           observable.next(fileReader.result);
           observable.complete();
