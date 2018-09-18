@@ -35,7 +35,7 @@ export class FormImportComponent implements OnInit {
       active: 'orig', direction: 'desc'
     },
     sellVisible: ['orig', 'transl'] //
-  }
+  };
 
 
   ngOnInit() {

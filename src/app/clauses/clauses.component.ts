@@ -105,15 +105,17 @@ export class ClausesComponent implements OnInit {
       data: this.newClauses
     });
     dialogRef.afterClosed().subscribe(result => {
-      console.log('open Add List Dialog result.length:' + result.length);
+      console.log('open Add List Dialog result.length:' + result.value.length );
+      // const clausesList = [{orig: 'word1', transl: 'слово1'}, {orig: 'word2', transl: 'слово2'}];
+      this.addClausesList(result.value)
+        .subscribe( data => {
+            this.getClauses();
+          }
+        );
+
     });
 
-    // const clausesList = [{orig: 'word1', transl: 'слово1'}, {orig: 'word2', transl: 'слово2'}];
-    // this.addClausesList(clausesList)
-    //   .subscribe( data => {
-    //     this.getClauses();
-    //   }
-    //   );
+
 
   }
 
