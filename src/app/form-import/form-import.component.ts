@@ -3,6 +3,8 @@ import {MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
 import { CvsParse } from '../components/parse-data/csv-parse.component';
+import {FormEditComponent} from '../form-edit/form-edit.component';
+
 
 @Component({
   selector: 'app-form-import',
@@ -20,7 +22,7 @@ export class FormImportComponent implements OnInit {
   resultData: Observable<{}>;
   targetFile: FileList;
 
-  settingsToChild = {
+  tableSettings = {
     pageStt: {
       // pageSizeOptions: [1, 3, 9],
       showFirstLastButtons: false,
@@ -40,7 +42,6 @@ export class FormImportComponent implements OnInit {
 
   ngOnInit() {
     this.regFieldf = this.data;
-    // this.resultData = [{orig: 'word1', transl: 'слово1'}, {orig: 'word2', transl: 'слово2'}];
   }
 
   public changeListener(files: FileList) {
@@ -59,7 +60,6 @@ export class FormImportComponent implements OnInit {
   public convertData(inData: string): Observable<any> {
     const tmpData =  this._cvsParse.getConvertData( inData, {headerDef: ['orig', 'transl'],
                                                              cellDef: ['orig', 'transl']});
-       // [{orig: 'word1', transl: 'слово1'}, {orig: 'word2', transl: 'слово2'}];
     return Observable.of(tmpData);
 }
 

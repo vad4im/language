@@ -21,14 +21,16 @@
 <div class="basic-container">
   <mat-grid-list cols="10" rowHeight="50px">
     <mat-grid-tile
-      [colspan]=1
+      [colspan]=3
       [rowspan]=10
       [style.background]= "'#D9EDD9'">
+
+      <app-form-edit></app-form-edit>
 
     </mat-grid-tile>
 
     <mat-grid-tile
-      [colspan]=9
+      [colspan]=7
       [rowspan]=1
       [style.background]="'#D9EDD9'">
       <div mat-dialog-content>
@@ -39,12 +41,12 @@
     </mat-grid-tile>
 
     <mat-grid-tile
-      [colspan]=9
+      [colspan]=7
       [rowspan]=8
       [style.background]= "'#D9EDD9'" >
 
       <div class="basic-container" *ngIf="resultData | async; let resultData; else loading;">
-        <app-simple-table  [parentSettings]="settingsToChild"
+        <app-simple-table  [parentSettings]="tableSettings"
                            [state] = "resultData"
         ></app-simple-table>
       </div>
@@ -53,7 +55,7 @@
     </mat-grid-tile>
 
     <mat-grid-tile
-      [colspan]=9
+      [colspan]=7
       [rowspan]=1
       [style.background]= "'#D9EDD9'" >
 

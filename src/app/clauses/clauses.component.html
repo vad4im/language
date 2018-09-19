@@ -6,10 +6,10 @@
   <button mat-raised-button
           (click)="openAddListDialog()" >Add List</button>
   <button mat-raised-button
-          [disabled]="!currentClauses"
+          [disabled]="selectedClauses.length !== 1"
           (click)="openEditDialog()" >Edit</button>
   <button mat-raised-button
-          [disabled]="!currentClauses"
+          [disabled]="selectedClauses.length === 0"
           (click)="openDelDialog()" >Del</button>
 
  <app-simple-table  (choiseRequest)="choiseEvent($event)"

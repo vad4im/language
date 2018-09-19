@@ -24,7 +24,7 @@ export class SimpleTableComponent implements OnInit, AfterViewInit  {
     this.choiseRequest.emit(
       {
         isSelect: this.selection.isSelected(row),
-        cnt: this.dataSource.data.length,
+        slctd: this.selection.selected,
         row: row
       }
     );
@@ -49,6 +49,8 @@ export class SimpleTableComponent implements OnInit, AfterViewInit  {
       this.isAllSelected() ?
             this.selection.clear() :
             this.dataSource.data.forEach(row => this.selection.select(row));
+            this.choiseRequestEmit(null);
+
     }
     // console.log('Simple-Table_component header Selected count: ' +
     // this.selection.selected.length + 'MPS' + this.selection.isMultipleSelection() );

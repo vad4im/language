@@ -21,7 +21,7 @@ import { MatDialog } from '@angular/material';
 export class ClausesComponent implements OnInit {
   allTypeKitClausesSelect: boolean;
   clauses: Observable<{}>;
-  currentClauses: Phrase;
+  selectedClauses: Phrase[];
   newClauses: Phrase;
   clausesKit: ClausesKit;
 
@@ -41,7 +41,7 @@ export class ClausesComponent implements OnInit {
 
 
   ngOnInit() {
-    this.settingsToChild = Phrase.createTableViewConf(this.tableFields, false );
+    this.settingsToChild = Phrase.createTableViewConf(this.tableFields, true );
     this.allTypeKitClausesSelect = false;
 
     // this.getClauses();
@@ -57,7 +57,6 @@ export class ClausesComponent implements OnInit {
   onRefChange(parClausesKit: ClausesKit): void {
     console.log('Clauses KIT ref change id:' + parClausesKit._id + ' load data ..');
     this.clausesKit = parClausesKit;
-    this.currentClauses = null;
     this.newClauses = new Phrase(this.clausesKit._id);
     this.getClauses();
   }
@@ -68,6 +67,7 @@ export class ClausesComponent implements OnInit {
     } else {
       this.clauses = this.phraseService.getClausesOfRef(this.clausesKit._id);
     }
+    this.selectedClauses = [];
   }
 
    addClausesList(clauses): Observable<Phrase[]> {
@@ -91,28 +91,32 @@ export class ClausesComponent implements OnInit {
    }
 
   openDelDialog(): void {
-    this.deleteClauses(this.currentClauses)
-      .subscribe( data => {
-          // del from array ???
-          this.getClauses();
-        }
-      );
+    const resultObservables = [];
+    this.selectedClauses.forEach(row => resultObservables.push(this.deleteClauses(row)));
+    Observable.forkJoin(resultObservables)
+      .subscribe( data => this.getClauses() );
+    // this.deleteClauses(this.selectedClauses)
+    //   .subscribe( data => {
+    //       del from array ???
+          // this.getClauses();
+        // }
+      // );
   }
 
   openAddListDialog(): void {
     const dialogRef = this.dialog.open(FormImportComponent, {
-      width: '700px',
+      width: '1000px',
       data: this.newClauses
     });
     dialogRef.afterClosed().subscribe(result => {
-      console.log('open Add List Dialog result.length:' + result.value.length );
+      if (result){
       // const clausesList = [{orig: 'word1', transl: 'слово1'}, {orig: 'word2', transl: 'слово2'}];
-      this.addClausesList(result.value)
-        .subscribe( data => {
-            this.getClauses();
-          }
-        );
-
+        this.addClausesList(result.value)
+          .subscribe(data => {
+              this.getClauses();
+            }
+          );
+      }
     });
 
 
@@ -139,13 +143,13 @@ export class ClausesComponent implements OnInit {
   openEditDialog(): void {
     const dialogRef = this.dialog.open(FormEditComponent, {
       width: '320px',
-      data: Phrase.createFieldsEditListConf(this.currentClauses, this.formFields)
+      data: Phrase.createFieldsEditListConf(this.selectedClauses[1], this.formFields)
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.updateClauses((result as Phrase).getEditedFieldsList(this.currentClauses))
+        this.updateClauses((result as Phrase).getEditedFieldsList(this.selectedClauses[1]))
             .subscribe(
-               data => {Phrase.serialize(this.currentClauses, data); }
+               data => {Phrase.serialize(this.selectedClauses[1], data); }
         );
       }
     });
@@ -153,12 +157,9 @@ export class ClausesComponent implements OnInit {
 
 
   choiseEvent(data) {
-    if (data.isSelect) {
-      this.currentClauses = data.row;
-      this.newClauses.id = data.cnt + 1;
-    } else {
-      this.currentClauses = null;
-    }
+        this.selectedClauses = data.slctd;
+        this.newClauses.id = data.slctd.length + 1;
+
   }
 
 }
