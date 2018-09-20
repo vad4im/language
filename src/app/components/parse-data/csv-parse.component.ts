@@ -1,6 +1,5 @@
 import { Injectable} from '@angular/core';
 import { CsvUtil } from './csv-util';
-import { CsvConf } from './csv-conf';
 
  // @Component({
  //    template: ``
@@ -8,37 +7,18 @@ import { CsvConf } from './csv-conf';
  @Injectable()
 export class CvsParse  {
 
-  constructor(private _fileUtil: CsvUtil,
-              private _csvConf: CsvConf
+  constructor(private _fileUtil: CsvUtil
   ) { }
 
-
-  setCsvRows(rowsInfo) {
-    this._csvConf.csvRows.cellDef = rowsInfo.cellDef;
-    this._csvConf.csvRows.headerDef  = rowsInfo.headerDef;
-    this._csvConf.csvRows.headerLength = this._csvConf.csvRows.headerDef.length;
-  }
-
-  setCsvConf(data) {
-    this._csvConf = data;
-  }
-
-  getCsvConf(): CsvConf {
-    return this._csvConf;
-  }
-
-
   // METHOD CALLED WHEN CSV FILE IS IMPORTED
-  getConvertData(inData, inCsvRows): any {
-      this.setCsvRows(inCsvRows);
+  getConvertData(inData, csvConf): any {
+      const csvRecordsArray = this._fileUtil.splitData(inData, csvConf);
 
-      const csvRecordsArray = this._fileUtil.splitData(inData, this._csvConf);
-
-      if (this._csvConf.isHeaderPresentFlag) {
-        this._csvConf.csvRows.headerDef = this._fileUtil.getHeaderArray(csvRecordsArray, this._csvConf);
-        this._csvConf.csvRows.headerLength = this._csvConf.csvRows.headerDef.length;
+      if (csvConf.isHeaderPresentFlag && csvConf.isCanGetHeaderFlag) {
+        csvConf.csvRows.cellDef = this._fileUtil.getHeaderArray(csvRecordsArray, csvConf);
+        csvConf.csvRows.headerLength = csvConf.csvRows.cellDef.length;
       }
-      return this._fileUtil.getDataJson(csvRecordsArray, this._csvConf);
+      return this._fileUtil.getDataJson(csvRecordsArray, csvConf);
   }
 
 }

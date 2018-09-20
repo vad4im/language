@@ -3,8 +3,7 @@ import { Injectable } from '@angular/core';
 @Injectable()
 
 export class CsvConf {
-    csvRows = {headerDef: [],
-               cellDef: {},
+    csvRows = {cellDef: [],
                headerLength: -1};
     delimiter = {
       tokenDataDelimeter: /\r\n|\n/,
@@ -12,7 +11,8 @@ export class CsvConf {
       tokenColDelimeter: ';',
       isEmptyRowUseFlag: false
    }
-    isHeaderPresentFlag: true;
+    isHeaderPresentFlag: false;
+    isCanGetHeaderFlag: false;
     validateHeaderAndRecordLengthFlag: true;
     valildateFileExtenstionFlag: true;
 

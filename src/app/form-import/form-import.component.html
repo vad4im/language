@@ -1,38 +1,26 @@
-<!--<h1 mat-dialog-title></h1>-->
-<!--<div mat-dialog-content>-->
-
-  <!--<input type="file" name class="upload" (change)="changeListener($event.target.files)">-->
-  <!--<button mat-button (click)="createData()">Upload</button>-->
-
-  <!--<div class="basic-container" *ngIf="resultData | async; let resultData; else loading;">-->
-  <!--<app-simple-table  [parentSettings]="settingsToChild"-->
-                     <!--[state] = "resultData"-->
-  <!--&gt;</app-simple-table>-->
-  <!--</div>-->
-  <!--<ng-template #loading>Loading User Data...</ng-template>-->
-
-
-<!--</div>-->
-<!--<div mat-dialog-actions>-->
-  <!--<button mat-button (click)="onNoClick()">Return</button>-->
-  <!--<button mat-button [mat-dialog-close]="resultData" cdkFocusInitial>Ok</button>-->
-<!--</div>-->
 
 <div class="basic-container">
   <mat-grid-list cols="10" rowHeight="50px">
     <mat-grid-tile
-      [colspan]=3
-      [rowspan]=10
-      [style.background]= "'#D9EDD9'">
+      [colspan]=3 [rowspan]=10 [style.background]= "'#D9EDD9'">
 
-      <app-form-edit></app-form-edit>
+      <div mat-dialog-content>
+        <div class="form">
+          <dynamic-form [fields]="fieldConfig" (submit)="submit($event)">
+          </dynamic-form>
+          <div class="margin-top">
+            {{  form.value | json }}
+          </div>
+        </div>
+      </div>
+      <div mat-dialog-actions>
+        <button mat-button  cdkFocusInitial>Ok</button>
+      </div>
 
     </mat-grid-tile>
 
     <mat-grid-tile
-      [colspan]=7
-      [rowspan]=1
-      [style.background]="'#D9EDD9'">
+      [colspan]=7 [rowspan]=1 [style.background]="'#D9EDD9'">
       <div mat-dialog-content>
 
         <input type="file" name class="upload" (change)="changeListener($event.target.files)">
@@ -41,9 +29,7 @@
     </mat-grid-tile>
 
     <mat-grid-tile
-      [colspan]=7
-      [rowspan]=8
-      [style.background]= "'#D9EDD9'" >
+      [colspan]=7 [rowspan]=8 [style.background]= "'#D9EDD9'" >
 
       <div class="basic-container" *ngIf="resultData | async; let resultData; else loading;">
         <app-simple-table  [parentSettings]="tableSettings"
@@ -55,9 +41,7 @@
     </mat-grid-tile>
 
     <mat-grid-tile
-      [colspan]=7
-      [rowspan]=1
-      [style.background]= "'#D9EDD9'" >
+      [colspan]=7 [rowspan]=1 [style.background]= "'#D9EDD9'" >
 
       <div mat-dialog-actions>
         <button mat-button (click)="onNoClick()">Return</button>

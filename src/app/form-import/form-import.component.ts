@@ -1,10 +1,11 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, ViewChild } from '@angular/core';
 import {MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
 import { CvsParse } from '../components/parse-data/csv-parse.component';
-import {FormEditComponent} from '../form-edit/form-edit.component';
-
+import { CsvConf } from '../components/parse-data/csv-conf';
+import { DynamicFormComponent } from '../components/dynamic-form/dynamic-form.component';
+import { FieldConfig } from '../field.interface';
 
 @Component({
   selector: 'app-form-import',
@@ -14,13 +15,15 @@ import {FormEditComponent} from '../form-edit/form-edit.component';
 export class FormImportComponent implements OnInit {
 
   constructor(public _cvsParse: CvsParse,
+              private _csvConf: CsvConf,
               public dialogRef: MatDialogRef<FormImportComponent>,
               @Inject(MAT_DIALOG_DATA)    public data: any
   ) { }
 
-  regFieldf: any;
-  resultData: Observable<{}>;
+  parentData: any;
   targetFile: FileList;
+  formImportConfig: any;
+  resultData: Observable<{}>;
 
   tableSettings = {
     pageStt: {
@@ -38,11 +41,53 @@ export class FormImportComponent implements OnInit {
     },
     sellVisible: ['orig', 'transl'] //
   };
+  @ViewChild(DynamicFormComponent) form: DynamicFormComponent;
+  fieldConfig: FieldConfig[] = [
+      {
+        type: 'select',
+        label: 'Encoding',
+        inputType: 'text',
+        name: 'encoding',
+        value: 'windows-1251',
+        options: ['windows-1251', 'UTF-8']
+      },
+      {
+        type: 'checkbox',
+        label: 'id',
+        name: 'id',
+        value: false
+      },
+    {
+      type: 'checkbox',
+      label: 'orig',
+      name: 'orig',
+      value: true
+    },
+    {
+      type: 'checkbox',
+      label: 'transl',
+      name: 'transl',
+      value: true
+    }
+    ];
 
+  setCsvConf(data) {
+    this._csvConf = data;
+  }
+
+  getCsvConf(): CsvConf {
+    return this._csvConf;
+  }
+  setCsvRows(rowsInfo) {
+    this._csvConf.csvRows.cellDef = rowsInfo.cellDef;
+    this._csvConf.csvRows.headerLength = this._csvConf.csvRows.cellDef.length;
+  }
 
   ngOnInit() {
-    this.regFieldf = this.data;
+     this.parentData = this.data;
   }
+
+  submit(value: any) {}
 
   public changeListener(files: FileList) {
     this.targetFile = files;
@@ -58,8 +103,8 @@ export class FormImportComponent implements OnInit {
   }
 
   public convertData(inData: string): Observable<any> {
-    const tmpData =  this._cvsParse.getConvertData( inData, {headerDef: ['orig', 'transl'],
-                                                             cellDef: ['orig', 'transl']});
+    this.setCsvRows({cellDef: ['orig', 'transl']});
+    const tmpData =  this._cvsParse.getConvertData( inData, this._csvConf);
     return Observable.of(tmpData);
 }
 
@@ -68,7 +113,7 @@ export class FormImportComponent implements OnInit {
       const file: File = this.targetFile.item(0);
       return Observable.create((observable) => {
         const fileReader = new FileReader;
-        fileReader.readAsText(file, 'windows-1251'); //'UTF-8' !!!!!!!!!!!!!!!!!!!!!
+        fileReader.readAsText(file, 'windows-1251');
         fileReader.onload = (() => {
           observable.next(fileReader.result);
           observable.complete();

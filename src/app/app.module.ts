@@ -24,15 +24,15 @@ import { SecondTableComponent } from './second-table/second-table.component';
 import { ClausesKitComponent } from './clauses-kit/clauses-kit.component';
 
 import { FormEditComponent } from './form-edit/form-edit.component';
-import { DynFormComponent} from './dyn-form/dyn-form.component';
+// import { DynFormComponent} from './dyn-form/dyn-form.component';
 import { DynamicFormComponent } from './components/dynamic-form/dynamic-form.component';
 import { DynamicFieldDirective} from './components/dynamic-field/dynamic-field.directive';
 import {InputComponent} from './components/input/input.component';
 import {DateComponent} from './components/date/date.component';
-import {CheckboxComponent} from "./components/checkbox/checkbox.component";
-import {ButtonComponent} from "./components/button/button.component";
-import {RadiobuttonComponent} from "./components/radiobutton/radiobutton.component";
-import {SelectComponent} from "./components/select/select.component";
+import {CheckboxComponent} from './components/checkbox/checkbox.component';
+import {ButtonComponent} from './components/button/button.component';
+import {RadiobuttonComponent} from './components/radiobutton/radiobutton.component';
+import {SelectComponent} from './components/select/select.component';
 import { FileUploadComponent } from './file-upload/file-upload.component';
 import { FormImportComponent } from './form-import/form-import.component';
 import { CvsParse } from './components/parse-data/csv-parse.component';
@@ -72,7 +72,7 @@ import {CsvConf} from './components/parse-data/csv-conf';
     ClausesKitComponent,
 
     FormEditComponent,
-    DynFormComponent,
+    // DynFormComponent,
     DynamicFormComponent,
     DynamicFieldDirective,
     InputComponent,

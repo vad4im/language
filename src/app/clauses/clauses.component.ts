@@ -106,7 +106,7 @@ export class ClausesComponent implements OnInit {
   openAddListDialog(): void {
     const dialogRef = this.dialog.open(FormImportComponent, {
       width: '1000px',
-      data: this.newClauses
+      data: null
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result){

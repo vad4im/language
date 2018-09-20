@@ -69,7 +69,7 @@ export class CsvUtil {
 
   getDataJson(csvRecordsArray, csvConf) {
     const dataArr = [];
-    for (let i = 0; i < csvRecordsArray.length; i++) {
+    for (let i = csvConf.isHeaderPresentFlag ? 1 : 0; i < csvRecordsArray.length; i++) {
       const data = (csvRecordsArray[i].split(csvConf.delimiter.tokenColDelimeter));
       if (csvConf.validateHeaderAndRecordLengthFlag && data.length !== csvConf.csvRows.headerLength) {
         if (data === '') {
