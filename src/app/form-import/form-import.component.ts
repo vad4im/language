@@ -78,13 +78,10 @@ export class FormImportComponent implements OnInit {
   getCsvConf(): CsvConf {
     return this._csvConf;
   }
-  setCsvRows(rowsInfo) {
-    this._csvConf.csvRows.cellDef = rowsInfo.cellDef;
-    this._csvConf.csvRows.headerLength = this._csvConf.csvRows.cellDef.length;
-  }
 
   ngOnInit() {
-     this.parentData = this.data;
+    this._csvConf.impCsvRowc(['orig', 'transl']);
+    this.parentData = this.data;
   }
 
   submit(value: any) {}
@@ -103,7 +100,6 @@ export class FormImportComponent implements OnInit {
   }
 
   public convertData(inData: string): Observable<any> {
-    this.setCsvRows({cellDef: ['orig', 'transl']});
     const tmpData =  this._cvsParse.getConvertData( inData, this._csvConf);
     return Observable.of(tmpData);
 }

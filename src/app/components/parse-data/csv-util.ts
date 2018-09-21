@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import {CsvConf} from './csv-conf';
 
 @Injectable()
 export class CsvUtil {
@@ -8,8 +9,9 @@ export class CsvUtil {
   isCSVFile(file) {
     return file.name.endsWith('.csv');
   }
-  splitData(inData, csvConf): any[] {
 
+  splitData(inData, csvConf: CsvConf): any[] {
+    const headerLength: number = csvConf.getCsvRowsCnt(true);
     const retData = [];
     let rowData = '';
     if (csvConf.delimiter.tokenRowDelimeter !== null) {
@@ -22,20 +24,20 @@ export class CsvUtil {
           rowData = rowData + csvConf.delimiter.tokenColDelimeter + arrData[i];
           cnt++;
         }
-        if (cnt > csvConf.csvRows.headerLength ) {
+        if (cnt >  headerLength ) {
           retData.push( rowData.substring(csvConf.delimiter.tokenColDelimeter.length)  );
           cnt = 1;
           rowData = '';
         }
       }
       if (cnt !== 1) {
-        alert('last row das hot has all data');
+        alert('last row das not hav all data');
       }
     }
     return retData;
   }
 
-  getHeaderArray(csvRecordsArr, csvConf) {
+  getHeaderArray(csvRecordsArr, csvConf: CsvConf) {
     const headers = csvRecordsArr[0].split(csvConf.delimiter.tokenRowDelimeter);
     const headerArray = [];
     for (let j = 0; j < headers.length; j++) {
@@ -62,26 +64,27 @@ export class CsvUtil {
   convertObject(desc, data): any {
     const ret = new Object();
     for (let i = 0; i < desc.length; i++) {
-      ret[desc[i]] = data[i];
+      ret[desc[i].name] = data[i];
     }
     return ret;
   }
 
-  getDataJson(csvRecordsArray, csvConf) {
+  getDataJson(csvRecordsArray, csvConf: CsvConf) {
+    const headerLength: number = csvConf.getCsvRowsCnt(true);
     const dataArr = [];
     for (let i = csvConf.isHeaderPresentFlag ? 1 : 0; i < csvRecordsArray.length; i++) {
       const data = (csvRecordsArray[i].split(csvConf.delimiter.tokenColDelimeter));
-      if (csvConf.validateHeaderAndRecordLengthFlag && data.length !== csvConf.csvRows.headerLength) {
+      if (csvConf.validateHeaderAndRecordLengthFlag && data.length !== headerLength) {
         if (data === '') {
           alert('Extra blank line is present at line number ' + i + ', please remove it.');
           return null;
         } else {
  alert('Record at line number ' + i + ' contain ' + data.length +
-       ' tokens, and is not matching with header length of :' + csvConf.csvRows.headerLength);
+       ' tokens, and is not matching with header length of :' + headerLength);
           return null;
         }
       }
-      dataArr.push(this.convertObject(csvConf.csvRows.cellDef, data));
+      dataArr.push(this.convertObject(csvConf.csvRows, data));
     }
      return dataArr;
   }
