@@ -13,10 +13,9 @@
           </div>
         </div>
         <div mat-dialog-actions>
-          <button mat-button  cdkFocusInitial>Ok</button>
+          <button mat-button  cdkFocusInitial (click)="setConfig(form.value)">set Config</button>
         </div>
       </div>
-
     </mat-grid-tile>
 
     <mat-grid-tile

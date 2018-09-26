@@ -14,6 +14,8 @@ import { SelectComponent } from '../select/select.component';
 import { DateComponent } from '../date/date.component';
 import { RadiobuttonComponent } from '../radiobutton/radiobutton.component';
 import { CheckboxComponent } from '../checkbox/checkbox.component';
+import {MultiCheckboxComponent} from '../checkbox/multi-checkbox';
+import {CheckboxBlockComponent} from '../checkbox/checkbox-block.component';
 
 const componentMapper = {
   input: InputComponent,
@@ -21,7 +23,9 @@ const componentMapper = {
   select: SelectComponent,
   date: DateComponent,
   radiobutton: RadiobuttonComponent,
-  checkbox: CheckboxComponent
+  checkbox: CheckboxComponent,
+  multiCheckbox: MultiCheckboxComponent,
+  checkboxBlock: CheckboxBlockComponent
 };
 @Directive({
   selector: '[dynamicField]'

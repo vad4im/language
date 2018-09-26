@@ -1,0 +1,13 @@
+<div class="demo-full-width margin-top" [formGroup]="group" >
+  <!--<mat-checkbox [formControlName]="field.name">{{field.label}}</mat-checkbox>-->
+
+  <ng-container [formArrayName]="field.name">
+    <label>{{ field.label }}</label>
+    <span *ngFor="let cells of field.options; let i = index" [formGroupName]="i">
+          <input type="checkbox" [name]="field.name" formControlName="value"  />{{cells}}
+<!--<mat-checkbox [formControlName]="field.name">{{cells}}</mat-checkbox>-->
+
+    </span>
+  </ng-container>
+
+</div>

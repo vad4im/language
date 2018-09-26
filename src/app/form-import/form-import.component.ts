@@ -51,23 +51,19 @@ export class FormImportComponent implements OnInit {
         value: 'windows-1251',
         options: ['windows-1251', 'UTF-8']
       },
-      {
-        type: 'checkbox',
-        label: 'id',
-        name: 'id',
-        value: false
-      },
     {
-      type: 'checkbox',
-      label: 'orig',
-      name: 'orig',
-      value: true
-    },
-    {
-      type: 'checkbox',
-      label: 'transl',
-      name: 'transl',
-      value: true
+      type: 'checkboxBlock',
+      label: 'cellList',
+      name: 'cellList',
+      options : [
+        'id',
+        'orig',
+        'transl'
+      ],
+      value: [
+        'orig',
+        'transl'
+      ]
     }
     ];
 
@@ -80,12 +76,15 @@ export class FormImportComponent implements OnInit {
   }
 
   ngOnInit() {
-    this._csvConf.impCsvRowc(['orig', 'transl']);
+    this._csvConf.impCsvRows(['orig', 'transl']);
     this.parentData = this.data;
   }
 
   submit(value: any) {}
 
+  setConfig(value: any) {
+    console.log('submit setConfig -> ' + value);
+  }
   public changeListener(files: FileList) {
     this.targetFile = files;
   }

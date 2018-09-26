@@ -34,7 +34,7 @@ export class CsvConf {
     validateHeaderAndRecordLengthFlag: true;
     valildateFileExtenstionFlag: true;
 
-  impCsvRowc (cells: string[]) {
+  impCsvRows (cells: string[]) {
     this._csvRows = [];
     cells.forEach((item, i, r) => (
       this._csvRows.push(new CellDef(item, i, true))

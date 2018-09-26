@@ -33,7 +33,7 @@ export class DynamicFormComponent implements OnInit {
   constructor(private fb: FormBuilder) {}
 
   ngOnInit() {
-    this.form = this.createControl();
+    this.form = this.createGroup();
   }
 
   onSubmit(event: Event) {
@@ -46,18 +46,43 @@ export class DynamicFormComponent implements OnInit {
     }
   }
 
-  createControl() {
+  createGroup() {
     const group = this.fb.group({});
     this.fields.forEach(field => {
-      if (field.type === 'button') return;
-      const control = this.fb.control(
-        field.value,
-        this.bindValidations(field.validations || [])
-      );
-      group.addControl(field.name, control);
+      if (field.type === 'button') { return; }
+      // const control = this.fb.control(field.value,
+      //                                this.bindValidations(field.validations || []));
+      group.addControl(field.name, this.createControl(field));
     });
     return group;
   }
+
+  createControl(config: FieldConfig): any {
+    const { disabled, validations, value } = config;
+    if (config.type === 'multiCheckbox') {
+      return this.fb.array(
+        config.options.map(x => {
+          return this.fb.group({
+            name: x,
+            value: value ? value.indexOf(x) > - 1 : false
+          });
+        }));
+    }
+    if (config.type === 'checkboxBlock') {
+      return this.fb.array(
+        config.options.map(x => {
+          return this.fb.group({
+            name: x,
+            value: value ? value.indexOf(x) > - 1 : false,
+            order: 0
+          });
+        }));
+    }
+    return this.fb.control({ disabled, value }, this.bindValidations(validations || []));
+  }
+
+
+
 
   bindValidations(validations: any) {
     if (validations.length > 0) {
